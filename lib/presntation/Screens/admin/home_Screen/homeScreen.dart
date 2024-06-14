@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hospital/constances/mycolor.dart';
-import 'package:hospital/presntation/Screens/add_Reception/Screens/showReception.dart';
-import 'package:hospital/presntation/Screens/add_Reception/addreception.dart';
-
-
-import 'package:hospital/presntation/Screens/home_Screen/widgets/navigationDrawer.dart';
-import 'package:hospital/presntation/Screens/home_Screen/widgets/showEmployee.dart';
+import 'package:hospital/presntation/Screens/admin/add_Reception/Screens/showReception.dart';
+import 'package:hospital/presntation/Screens/admin/home_Screen/widgets/navigationDrawer.dart';
+import 'package:hospital/presntation/Screens/admin/home_Screen/widgets/showEmployee.dart';
 
 class Home_Screen extends StatefulWidget {
   const Home_Screen({super.key});

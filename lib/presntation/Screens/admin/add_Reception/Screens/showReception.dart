@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital/constances/mycolor.dart';
-import 'package:hospital/presntation/Screens/add_Reception/Screens/editReception.dart';
-import 'package:hospital/presntation/Screens/add_Reception/addreception.dart';
+import 'package:hospital/presntation/Screens/admin/add_Reception/Screens/editReception.dart';
+import 'package:hospital/presntation/Screens/admin/add_Reception/addreception.dart';
+
 class ShowReception extends StatefulWidget {
   @override
   _ShowReceptionState createState() => _ShowReceptionState();

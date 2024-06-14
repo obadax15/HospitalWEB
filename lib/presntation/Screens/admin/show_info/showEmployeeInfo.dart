@@ -1,7 +1,7 @@
-import 'package:hospital/presntation/Screens/show_info/widgets/show_buttons.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hospital/constances/mycolor.dart';
+import 'package:hospital/presntation/Screens/admin/show_info/widgets/show_buttons.dart';
 
 class Show_Employee_Info extends StatelessWidget {
   const Show_Employee_Info({super.key});

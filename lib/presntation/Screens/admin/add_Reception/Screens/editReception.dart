@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hospital/constances/mycolor.dart';
-import 'package:hospital/presntation/Screens/add_Reception/addreception.dart';
+import 'package:hospital/presntation/Screens/admin/add_Reception/addreception.dart';
 
 class CharacterEditScreen extends StatelessWidget {
   final Character character;
