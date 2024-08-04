@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hospital/bussines_logic/reception_cubit/reception_cubit.dart';
 import 'package:hospital/constances/mycolor.dart';
 import 'package:hospital/presntation/Screens/admin/add_Reception/Screens/editReception.dart';
 import 'package:hospital/presntation/Screens/admin/add_Reception/addreception.dart';
@@ -10,170 +12,147 @@ class ShowReception extends StatefulWidget {
 }
 
 class _ShowReceptionState extends State<ShowReception> {
-  final List<Character> characters =[];
-  late TextEditingController _searchController;
+  final List<ReceptionController> characters = [];
+  TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await BlocProvider.of<ReceptionCubit>(context).getReceptions();
+    });
     super.initState();
-    _searchController = TextEditingController();
   }
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    List<String> pathofimages = ['images/img_1.png', 'images/img_2.png', 'images/img_3.png','images/img_2.png','images/img_2.png','images/img_2.png','images/img_2.png','images/img_2.png'];
+    List<String> pathofimages = [
+      'images/img_1.png',
+    ];
 
-    return Column(
-      children: [
-        Container( margin: const EdgeInsets.only(left: 20,right: 20,top: 10),
-          decoration: BoxDecoration(
-    boxShadow: MyColor.boxshadow,
-      borderRadius: const BorderRadius.all(
-        Radius.circular(12),
-      ),
-      color: Colors.white,
-    ),
-          height: 50,width:width/1.2,
-        child: TextField(
-          controller: _searchController,
 
-          decoration: InputDecoration(
-            suffixIcon: const Icon(Icons.search_outlined),
-            hintText: 'Search Reception',
-            border: InputBorder.none,
-            hintStyle: TextStyle(color: Colors.black.withOpacity(0.7)),
+    return Padding(
+      padding: const EdgeInsets.all(15),
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+            decoration: BoxDecoration(
+              boxShadow: MyColor.boxshadow,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(12),
+              ),
+              color: Colors.white,
+            ),
+            height: 50,
+            width: width / 1.2,
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                suffixIcon: const Icon(Icons.search_outlined),
+                hintText: 'Search Reception',
+                border: InputBorder.none,
+                hintStyle: TextStyle(color: Colors.black.withOpacity(0.7)),
+              ),
+              style: const TextStyle(
+                color: Colors.black,
+              ),
+              onChanged: (value) {
+                setState(() {});
+              },
+            ),
           ),
-          style: const TextStyle(color: Colors.black,),
-          onChanged: (value) {
-            setState(() {});
-          },
-
-        ),
-      ),
-        const SizedBox(height: 100,),
-        Expanded(
-          child: GridView.builder(
-            physics:const BouncingScrollPhysics() ,
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount( crossAxisCount: 5, // Number of columns
-              childAspectRatio: 1, crossAxisSpacing:0,),
-            itemCount: characters.length,
-            itemBuilder: (context, index) {
-              final character = characters[index];
-              final searchText = _searchController.text.toLowerCase();
-              final characterName = character.controllers[1].text.toLowerCase();
-              if (searchText.isNotEmpty && !characterName.contains(searchText)) {
-                return const SizedBox.shrink();
+          const SizedBox(
+            height: 100,
+          ),
+          BlocBuilder<ReceptionCubit, ReceptionState>(
+            builder: (context, state) {
+              if (state.receptionStatus == ReceptionStatus.loading) {
+                return const Expanded(
+                  child: CircularProgressIndicator(color: MyColor.mykhli,),
+                ) ;
               }
-              return Dismissible(
-
-                key: Key(characterName),
-                onDismissed: (direction) {
-                  setState(() {
-                    characters.removeAt(index);
-                  });
-                },
-                background: Container(
-                  color: Colors.red,
-                  alignment: Alignment.centerRight,
-                  child: const Icon(
-                    Icons.delete,
-                    color: Colors.white,
+              if (BlocProvider.of<ReceptionCubit>(context).reception == null ) {
+                return const Expanded(
+                  child: CircularProgressIndicator(color: MyColor.mykhli,),
+                ) ;
+              }
+              List rec = BlocProvider.of<ReceptionCubit>(context).reception;
+              return Expanded(
+                child: GridView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4, // Number of columns
+                    mainAxisExtent: 155,
+                    crossAxisSpacing: 50,
+                    mainAxisSpacing: 20
                   ),
-                ),
-                child: Container(width:width/7,height: height/5,
-                  decoration: BoxDecoration(
-                    boxShadow: MyColor.boxshadow,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(12),
-                    ),
-                    color: Colors.white,
-                  ),
-                  child: InkWell(
-                    hoverColor: Colors.transparent,
-                    child: Column(
-                      children: [
-                        Image.asset(pathofimages.isNotEmpty?
-                          pathofimages[index]:'',
-                          height: height/7,
-                          width: width/7,
+                  itemCount: rec.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      width: width / 7,
+                      height: height / 10,
+                      decoration: BoxDecoration(
+                        boxShadow: MyColor.boxshadow,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(12),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        color: Colors.white,
+                      ),
+                      child: InkWell(
+                        hoverColor: Colors.transparent,
+                        child: Column(
                           children: [
-                            Text(characterName.isNotEmpty ? characterName : 'Reception ${index + 1}',style: TextStyle(fontSize: width/80),),
-
+                            Image.asset(
+                              pathofimages[0] ,
+                              height: height / 7,
+                              width: width / 7,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  rec[index]['fullName'],
+                                  style: TextStyle(fontSize: width / 80),
+                                ),
+                              ],
+                            )
                           ],
-                        )
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CharacterEditScreen(
-                            isediting: characterName.isNotEmpty
-
-                                ?true:false,
-                            character: character,
-
-                            onSave: (_) {
-                              setState(() {});
-                              Navigator.pop(context);
-                            },
-                          ),
                         ),
-                      );
-                    },
-                  ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditReception(
+                                isediting: true,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
                 ),
-
               );
             },
           ),
-        ),
-        ElevatedButton(onPressed: () {
-    _addNewCharacter();
-    }, child: const Icon(Icons.add),),
-
-
-
-      ],
-
-
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => EditReception(isediting: false)));
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(MyColor.mykhli),
+            ),
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
     );
   }
-
-  void _addNewCharacter() {
-    setState(() {
-      characters.add(Character());
-    });
-  }
 }
-// onTap: () {
-//   Navigator.push(
-//     context,
-//     MaterialPageRoute(
-//       builder: (context) => CharacterEditScreen(
-//         isediting: characterName.isNotEmpty
-//
-//             ?true:false,
-//         character: character,
-//
-//         onSave: (_) {
-//           setState(() {});
-//           Navigator.pop(context);
-//         },
-//       ),
-//     ),
-//   );
-// },
-// child: ListTile(
-// title: Text(characterName.isNotEmpty
-// ? characterName
-//     : 'Reception ${index + 1}'),
-//
-// ),

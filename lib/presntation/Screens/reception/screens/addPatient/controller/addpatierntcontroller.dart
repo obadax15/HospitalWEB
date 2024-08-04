@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 
-class ReceptionController {
+class Patient {
   final List<TextEditingController> controllers;
 
-  ReceptionController()
+  Patient()
       : controllers = List.generate(
-    8, (index) => TextEditingController(),
+    10, (index) => TextEditingController(),
   );
 }

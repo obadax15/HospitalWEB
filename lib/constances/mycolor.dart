@@ -3,6 +3,7 @@ class MyColor{
   static const Color myBlue=Color.fromRGBO(175, 216, 251, 0.3);
   static const Color myBlue2=Color.fromRGBO(175, 216, 251, 1);
   static const Color mykhli=Color.fromRGBO(65, 99, 142, 1);
+  static const Color myGrey=Color.fromRGBO(217, 217, 217, 1);
   static  final boxshadow=[
   BoxShadow(
 

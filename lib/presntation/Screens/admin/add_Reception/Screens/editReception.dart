@@ -1,15 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hospital/bussines_logic/reception_cubit/reception_cubit.dart';
 import 'package:hospital/constances/mycolor.dart';
 import 'package:hospital/presntation/Screens/admin/add_Reception/addreception.dart';
 
-class CharacterEditScreen extends StatelessWidget {
-  final Character character;
-  final Function(Character) onSave;
+class EditReception extends StatefulWidget {
 
   final bool isediting;
+   List<String> specialists = [
+    "Cardiologist",
+    "Dermatologist",
+    "Neurologist",
+    "Orthopedic",
+    "Pediatrician"
+  ];
 
-  const CharacterEditScreen({super.key, required this.character, required this.isediting, required this.onSave});
+   EditReception({super.key, required this.isediting});
 
+  @override
+  State<EditReception> createState() => _EditReceptionState();
+}
+
+class _EditReceptionState extends State<EditReception> {
+  ReceptionController receptionController=ReceptionController();
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -17,14 +30,13 @@ class CharacterEditScreen extends StatelessWidget {
     List<String> people = [
       'اسم ونسبة الأم',
       '',
+      'اسم ونسبة الأب',
+
       'الرقم  الشخصي',
+      'الرقم  الوطني  ',
       'العنوان',
-      'محل وتاريخ الولادة',
+      'تاريخ الولادة',
       'الجنس',
-      'اختصاص السكرتارية',
-      'الرقم الوطني',
-      'أوقات المناوبة',
-      'إدخال كلمة السر'
     ];
     return Scaffold(
       backgroundColor: const Color.fromRGBO(175, 216, 251, 0.3),
@@ -43,7 +55,7 @@ class CharacterEditScreen extends StatelessWidget {
                 crossAxisCount: 2, // Number of columns
                 childAspectRatio: height / 120, crossAxisSpacing: width / 30,
               ),
-              itemCount: character.controllers.length,
+              itemCount: receptionController.controllers.length,
               itemBuilder: (context, index) {
                 return Column(
                   children: [
@@ -65,7 +77,7 @@ class CharacterEditScreen extends StatelessWidget {
                     SizedBox(
                       width: width / 3,
                       height: height / 18,
-                      child: TextFieldToAddInformationReception(index),
+                      child: index==8?TextFormField(controller: receptionController.controllers[8],):TextFieldToAddInformationReception(index),
                     ),
                   ],
                 );
@@ -91,14 +103,21 @@ class CharacterEditScreen extends StatelessWidget {
       ),
       child: Center(
           child: Text(
-        isediting == true ? ' السكرتارية ${character.controllers[1].text}' : 'أضافة سكرتارية',
+        widget.isediting == true ? ' السكرتارية ${receptionController.controllers[1].text}' : 'أضافة سكرتارية',
         style: const TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
       )),
     );
   }
 
-  Align ButtonToAddReception(double height, double width) {
-    return Align(
+  Widget ButtonToAddReception(double height, double width) {
+    return BlocListener<ReceptionCubit, ReceptionState>(
+  listener: (context, state) {
+    if(state.receptionStatus==ReceptionStatus.success){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Reception created successfully"))) ;
+    }
+    // TODO: implement listener
+  },
+  child: Align(
       alignment: Alignment.centerRight,
       child: Container(
         margin: EdgeInsets.only(bottom: height / 17, right: width / 13),
@@ -111,22 +130,32 @@ class CharacterEditScreen extends StatelessWidget {
         width: width / 8,
         child: Center(
           child: InkWell(
-            onTap: () {
-              onSave(character);
+            onTap: ()async {
+              await BlocProvider.of<ReceptionCubit>(context).createReception(
+                  receptionController.controllers[1].text,
+                  receptionController.controllers[3].text,
+                  receptionController.controllers[2].text,
+                  receptionController.controllers[0].text,
+                  receptionController.controllers[4].text,
+                  receptionController.controllers[5].text,
+                  receptionController.controllers[7].text,
+                  receptionController.controllers[6].text,
+                );
             },
             child: Text(
-              isediting == true ? 'تعديل' : 'تسجيل الدخول',
+              widget.isediting == true ? 'تعديل' : 'انشاء حساب',
               style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
         ),
       ),
-    );
+    ),
+);
   }
 
   TextFormField TextFieldToAddInformationReception(int index) {
     return TextFormField(
-      controller: character.controllers[index],
+      controller: receptionController.controllers[index],
       decoration: InputDecoration(
         fillColor: Colors.white,
         filled: true,
@@ -139,5 +168,36 @@ class CharacterEditScreen extends StatelessWidget {
         ),
       ),
     );
+
+
   }
-}
+  String? selectedSpecialist;
+
+  Future<void> _showSpecialistDialog() async {
+    final String? specialist = await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select a Specialist'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: widget.specialists.map((String specialist) {
+                return ListTile(
+                  title: Text(specialist),
+                  onTap: () {
+                    Navigator.pop(context, specialist);
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      },
+    );
+
+    if (specialist != null) {
+      setState(() {
+        selectedSpecialist = specialist;
+      });
+    }
+}}

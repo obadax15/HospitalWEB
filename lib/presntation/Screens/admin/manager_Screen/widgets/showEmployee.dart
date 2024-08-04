@@ -13,7 +13,7 @@ class _ExpandableListEmployeeState extends State<ExpandableListEmployee> {
   void initState() {
     super.initState();
     // Initialize the expanded state for each item in the list
-    _isExpanded = List<bool>.generate(5, (index) => false);
+    _isExpanded = List<bool>.generate(3, (index) => false);
   }
 
   @override
@@ -28,60 +28,55 @@ class _ExpandableListEmployeeState extends State<ExpandableListEmployee> {
         alignment: Alignment.topCenter,
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(3, (index) {
-                  return Expanded(
-                    child: Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            boxShadow: MyColor.boxshadow,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(12),
-                            ),
-                            color: Colors.white,
-                          ),
-                          margin: EdgeInsets.symmetric(horizontal: width / 15),
-                          child: InkWell(
-                            hoverColor: Colors.transparent,
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  pathofimages[index],
-                                  height: height/8,
-                                  width:width/8,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(people[index]),
-                                    Icon(
-                                      _isExpanded[index] ? Icons.expand_less : Icons.expand_more,
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            onTap: () {
-                              setState(() {
-                                _isExpanded[index] = !_isExpanded[index];
-                              });
-                            },
-                          ),
+          child: Row(
+            children: List.generate(3, (index) {
+              return Expanded(
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        boxShadow: MyColor.boxshadow,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(12),
                         ),
-                        if (_isExpanded[index])
-                          Column(
-                            children: _getSubItems(index),
-                          ),
-                      ],
+                        color: Colors.white,
+                      ),
+                      margin: EdgeInsets.symmetric(horizontal: width / 15),
+                      child: InkWell(
+                        hoverColor: Colors.transparent,
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              pathofimages[index],
+                              height: height/8,
+                              width:width/8,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(people[index]),
+                                Icon(
+                                  _isExpanded[index] ? Icons.expand_less : Icons.expand_more,
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        onTap: () {
+                          setState(() {
+                            _isExpanded[index] = !_isExpanded[index];
+                          });
+                        },
+                      ),
                     ),
-                  );
-                }),
-              ),
-            ],
+                    if (_isExpanded[index])
+                      Column(
+                        children: _getSubItems(index),
+                      ),
+                  ],
+                ),
+              );
+            }),
           ),
         ),
       ),
@@ -115,7 +110,6 @@ class _ExpandableListEmployeeState extends State<ExpandableListEmployee> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return ListView.builder(
-      scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemCount: names.length,
       itemBuilder: (ctx, index) => Container(

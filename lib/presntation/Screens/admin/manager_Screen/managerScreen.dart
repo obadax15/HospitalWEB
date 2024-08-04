@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hospital/constances/mycolor.dart';
 import 'package:hospital/presntation/Screens/admin/add_Reception/Screens/showReception.dart';
-import 'package:hospital/presntation/Screens/admin/home_Screen/widgets/navigationDrawer.dart';
-import 'package:hospital/presntation/Screens/admin/home_Screen/widgets/showEmployee.dart';
+import 'package:hospital/presntation/Screens/admin/manager_Screen/widgets/navigationDrawer.dart';
+import 'package:hospital/presntation/Screens/admin/manager_Screen/widgets/showEmployee.dart';
 
-class Home_Screen extends StatefulWidget {
-  const Home_Screen({super.key});
+class Manager_Screen extends StatefulWidget {
+  const Manager_Screen({super.key});
 
   @override
-  State<Home_Screen> createState() => _Home_ScreenState();
+  State<Manager_Screen> createState() => _Manager_ScreenState();
 }
 
-class _Home_ScreenState extends State<Home_Screen> {
+class _Manager_ScreenState extends State<Manager_Screen> {
   int currentIndex = 0;
   int index1 = 0;
   bool onclick = false;
