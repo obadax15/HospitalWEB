@@ -30,7 +30,7 @@ class _Manager_ScreenState extends State<Manager_Screen> {
         child: Row(mainAxisAlignment: MainAxisAlignment.end,
           children: [
             // index1==1?Container(width: 20,height: 20,color: Colors.red,):Container(width: 20,height: 20,color: Colors.green,)
-            currentIndex == 0 ? Expanded(child: ExpandableListEmployee()) :currentIndex==1?Expanded(child: ShowReception()):currentIndex==2? Room_View():Patient_View(),
+            currentIndex == 0 ? Expanded(child: ExpandableListEmployee()) :currentIndex==1?Expanded(child: ShowReception()):currentIndex==3? Room_View():Patient_View(),
 
             buildDrawerInContianer(height, width),
             Container(
