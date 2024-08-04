@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/bussines_logic/login_cubit/login_cubit.dart';
 import 'package:hospital/bussines_logic/patient_cubit/patient_cubit.dart';
 import 'package:hospital/bussines_logic/reception_cubit/reception_cubit.dart';
+import 'package:hospital/bussines_logic/room_cubit/room_cubit.dart';
 
 import 'appRouter.dart';
 
@@ -12,6 +13,7 @@ void main() {
       BlocProvider(create: (context) => LoginCubit()),
       BlocProvider(create: (context) => PatientCubit()),
       BlocProvider(create: (context) => ReceptionCubit()),
+      BlocProvider(create: (context) => RoomCubit()),
     ],
     child: Hospital(
       app_router: App_Router(),

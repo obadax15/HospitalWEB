@@ -3,6 +3,7 @@ import 'package:hospital/constances/mycolor.dart';
 import 'package:hospital/presntation/Screens/admin/add_Reception/Screens/showReception.dart';
 import 'package:hospital/presntation/Screens/admin/manager_Screen/widgets/navigationDrawer.dart';
 import 'package:hospital/presntation/Screens/admin/manager_Screen/widgets/showEmployee.dart';
+import 'package:hospital/presntation/Screens/admin/room_view.dart';
 
 class Manager_Screen extends StatefulWidget {
   const Manager_Screen({super.key});
@@ -28,7 +29,7 @@ class _Manager_ScreenState extends State<Manager_Screen> {
         child: Row(mainAxisAlignment: MainAxisAlignment.end,
           children: [
             // index1==1?Container(width: 20,height: 20,color: Colors.red,):Container(width: 20,height: 20,color: Colors.green,)
-            currentIndex == 0 ? Expanded(child: ExpandableListEmployee()) :currentIndex==1?Expanded(child: ShowReception()):currentIndex==2? Container():Container(),
+            currentIndex == 0 ? Expanded(child: ExpandableListEmployee()) :currentIndex==1?Expanded(child: ShowReception()):currentIndex==3? const Room_View():Container(),
 
             buildDrawerInContianer(height, width),
             Container(
