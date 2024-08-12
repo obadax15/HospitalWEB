@@ -13,6 +13,7 @@ class DoctorCubit extends Cubit<DoctorState> {
   var floorDoctor ;
   var sp ;
   var spDoctor ;
+  var details ;
 
   Future getDoctor() async {
     emit(state.copyWith(doctorStatus: DoctorStatus.loading)) ;
@@ -48,6 +49,16 @@ class DoctorCubit extends Cubit<DoctorState> {
     emit(state.copyWith(doctorStatus: DoctorStatus.loading)) ;
     try {
       spDoctor = await DoctorRepo.getSpDoctor(id) ;
+      emit(state.copyWith(doctorStatus: DoctorStatus.success)) ;
+    } catch (e) {
+      emit(state.copyWith(doctorStatus: DoctorStatus.failure)) ;
+    }
+  }
+
+  Future getDoctorDetails(int id) async {
+    emit(state.copyWith(doctorStatus: DoctorStatus.loading)) ;
+    try {
+      details = await DoctorRepo.getDoctorDetails(id) ;
       emit(state.copyWith(doctorStatus: DoctorStatus.success)) ;
     } catch (e) {
       emit(state.copyWith(doctorStatus: DoctorStatus.failure)) ;

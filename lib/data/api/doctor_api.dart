@@ -74,4 +74,22 @@ class DoctorApi {
       rethrow;
     }
   }
+
+  static Future getDoctorDetails (int id) async {
+    try {
+      var response = await http.get(
+        Uri.parse("${Strings.api}/doctors/details/$id"),
+        headers: {
+          "Accept": "application/json",
+          'Content-Type': 'application/json',
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return response.body;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

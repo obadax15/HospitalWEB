@@ -38,4 +38,13 @@ class DoctorRepo {
       rethrow ;
     }
   }
+
+  static Future getDoctorDetails(int id) async {
+    try {
+      var response = await DoctorApi.getDoctorDetails(id);
+      return jsonDecode(response);
+    } catch (e) {
+      rethrow ;
+    }
+  }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/bussines_logic/doctor_cubit/doctor_cubit.dart';
 import 'package:hospital/presntation/Screens/doctor/create_doctor_screen.dart';
+import 'package:hospital/presntation/Screens/doctor/show_doctor_details.dart';
 
 import '../../../constances/mycolor.dart';
 
@@ -123,14 +124,12 @@ class _ShowDoctorScreenState extends State<ShowDoctorScreen> {
                           ],
                         ),
                         onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => EditReception(
-                          //       isediting: true,
-                          //     ),
-                          //   ),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ShowDoctorDetails(id: rec[index]['id']) ,
+                            ),
+                          );
                         },
                       ),
                     );
