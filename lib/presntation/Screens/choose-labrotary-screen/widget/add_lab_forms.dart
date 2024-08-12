@@ -16,8 +16,10 @@ class Add_Lab_Forms extends StatefulWidget {
     "Orthopedic",
     "Pediatrician"
   ];
+final Map? details;
+  final int? id ;
 
-  Add_Lab_Forms({super.key, required this.isediting});
+  Add_Lab_Forms({super.key, required this.isediting, this.details, this.id});
 
   @override
   State<Add_Lab_Forms> createState() => _Add_Lab_Forms();
@@ -25,6 +27,23 @@ class Add_Lab_Forms extends StatefulWidget {
 
 class _Add_Lab_Forms extends State<Add_Lab_Forms> {
   LabController labController=LabController();
+  @override
+  void initState() {
+    if (widget.details != null) {
+      labController.controllers[1].text = widget.details!['fullName'];
+      labController.controllers[3].text = widget.details!['phoneNumber'];
+      labController.controllers[2].text = widget.details!['fatherName'];
+      labController.controllers[0].text = widget.details!['motherName'];
+      labController.controllers[4].text = widget.details!['internationalNumber'];
+      labController.controllers[5].text = widget.details!['currentLocation'];
+      labController.controllers[7].text = widget.details!['gender']== 1 ? 'Male' : "Female";
+      labController.controllers[6].text = widget.details!['birthdate'];
+    }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await BlocProvider.of<AddLabEmpCubit>(context).getLabEmpDetails(widget.id!);
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -86,7 +105,7 @@ class _Add_Lab_Forms extends State<Add_Lab_Forms> {
               },
             ),
           ),
-          ButtonToAddReception(height, width),
+          ButtonToAddLabEmp(height, width),
         ],
       ),
     );
@@ -111,10 +130,10 @@ class _Add_Lab_Forms extends State<Add_Lab_Forms> {
     );
   }
 
-  Widget ButtonToAddReception(double height, double width) {
+  Widget ButtonToAddLabEmp(double height, double width) {
     return BlocListener<AddLabEmpCubit, Add_Lab_Emp_State>(
       listener: (context, state) {
-        if(state.add_lab_emp_status==Add_Lab_Emp_Status.success){
+        if(state.add_lab_emp_status==Add_Lab_Emp_Status.success && widget.isediting==false){
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("LabEmp created successfully"))) ;
         }
       },
@@ -131,7 +150,9 @@ class _Add_Lab_Forms extends State<Add_Lab_Forms> {
           width: width / 8,
           child: Center(
             child: InkWell(
-              onTap: () async {
+              onTap:widget.isediting==false?
+
+                  () async {
                 await BlocProvider.of<AddLabEmpCubit>(context).createLabEmp(
                   labController.controllers[1].text,
                   labController.controllers[3].text,
@@ -141,6 +162,18 @@ class _Add_Lab_Forms extends State<Add_Lab_Forms> {
                   labController.controllers[5].text,
                   labController.controllers[7].text,
                   labController.controllers[6].text,
+                );
+              }: () async {
+                await BlocProvider.of<AddLabEmpCubit>(context).edit_Lab_Emp(
+                  labController.controllers[1].text,
+                  labController.controllers[3].text,
+                  labController.controllers[2].text,
+                  labController.controllers[0].text,
+                  labController.controllers[4].text,
+                  labController.controllers[5].text,
+                  labController.controllers[7].text,
+                  labController.controllers[6].text,
+                  widget.id!
                 );
               },
               child: Text(

@@ -8,6 +8,7 @@ import 'package:hospital/constances/mycolor.dart';
 import 'package:hospital/presntation/Screens/admin/add_Reception/Screens/editReception.dart';
 import 'package:hospital/presntation/Screens/admin/add_Reception/addreception.dart';
 import 'package:hospital/presntation/Screens/choose-labrotary-screen/widget/add_lab_forms.dart';
+import 'package:hospital/presntation/Screens/choose-labrotary-screen/widget/lab_emp_info.dart';
 
 class Show_Labrotary extends StatefulWidget {
   @override
@@ -124,8 +125,8 @@ class _Show_Labrotary extends State<Show_Labrotary> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Add_Lab_Forms(
-                                isediting: true,
+                              builder: (context) => Lab_Emp_Info(
+                               id: rr[index]['id'],
                               ),
                             ),
                           );

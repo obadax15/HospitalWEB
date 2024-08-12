@@ -4,7 +4,9 @@ enum Add_Rad_Emp_Status{
   loading ,
   success ,
   failure ,
-  initial
+  initial,
+  deletedone,
+  editdone,
 }
 class Add_Rad_Emp_State extends Equatable{
   final Add_Rad_Emp_Status add_rad_emp_status;

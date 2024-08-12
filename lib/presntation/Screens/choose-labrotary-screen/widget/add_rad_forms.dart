@@ -18,8 +18,10 @@ class Add_Rad_Forms extends StatefulWidget {
     "Orthopedic",
     "Pediatrician"
   ];
+  final Map? details;
+  final int? id ;
 
-  Add_Rad_Forms({super.key, required this.isediting});
+  Add_Rad_Forms({super.key, required this.isediting, this.details, this.id});
 
   @override
   State<Add_Rad_Forms> createState() => _Add_Rad_Forms();
@@ -27,6 +29,22 @@ class Add_Rad_Forms extends StatefulWidget {
 
 class _Add_Rad_Forms extends State<Add_Rad_Forms> {
 RadController radController=RadController();
+void initState() {
+  if (widget.details != null) {
+    radController.controllers[1].text = widget.details!['fullName'];
+    radController.controllers[3].text = widget.details!['phoneNumber'];
+    radController.controllers[2].text = widget.details!['fatherName'];
+    radController.controllers[0].text = widget.details!['motherName'];
+    radController.controllers[4].text = widget.details!['internationalNumber'];
+    radController.controllers[5].text = widget.details!['currentLocation'];
+    radController.controllers[7].text = widget.details!['gender']== 1 ? 'Male' : "Female";
+    radController.controllers[6].text = widget.details!['birthdate'];
+  }
+  WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    await BlocProvider.of<AddRadEmpCubit>(context).getRadEmpDetails(widget.id!);
+  });
+  super.initState();
+}
 @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -116,7 +134,7 @@ RadController radController=RadController();
   Widget ButtonToAddRadioGraph(double height, double width) {
     return BlocListener<AddRadEmpCubit, Add_Rad_Emp_State>(
       listener: (context, state) {
-        if(state.add_rad_emp_status==Add_Rad_Emp_Status.success){
+        if(state.add_rad_emp_status==Add_Rad_Emp_Status.success&& widget.isediting==false){
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("RAdEmp created successfully"))) ;
         }
       },
@@ -133,7 +151,7 @@ RadController radController=RadController();
           width: width / 8,
           child: Center(
             child: InkWell(
-              onTap: () async {
+              onTap:widget.isediting==false? () async {
                 await BlocProvider.of<AddRadEmpCubit>(context).createRadEmp(
                   radController.controllers[1].text,
                   radController.controllers[3].text,
@@ -144,7 +162,18 @@ RadController radController=RadController();
                   radController.controllers[7].text,
                   radController.controllers[6].text,
                 );
-              },
+              }:() async {
+    await BlocProvider.of<AddRadEmpCubit>(context).edit_Rad_Emp(
+    radController.controllers[1].text,
+    radController.controllers[3].text,
+    radController.controllers[2].text,
+    radController.controllers[0].text,
+    radController.controllers[4].text,
+    radController.controllers[5].text,
+    radController.controllers[7].text,
+    radController.controllers[6].text,
+    widget.id!);
+    },
               child: Text(
                 widget.isediting == true ? 'تعديل' : 'انشاء حساب',
                 style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),

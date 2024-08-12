@@ -8,6 +8,7 @@ import 'package:hospital/presntation/Screens/admin/add_Reception/Screens/editRec
 import 'package:hospital/presntation/Screens/admin/add_Reception/addreception.dart';
 import 'package:hospital/presntation/Screens/choose-labrotary-screen/widget/add_lab_forms.dart';
 import 'package:hospital/presntation/Screens/choose-labrotary-screen/widget/add_rad_forms.dart';
+import 'package:hospital/presntation/Screens/choose-labrotary-screen/widget/rad_emp_info.dart';
 
 class Show_RadioGraph extends StatefulWidget {
   @override
@@ -123,8 +124,8 @@ class _Show_RadioGraph extends State<Show_RadioGraph> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Add_Rad_Forms(
-                            isediting: true,
+                          builder: (context) => Rad_Emp_Info(
+                            id: rr[index]['id'],
                           ),
                         ),
                       );

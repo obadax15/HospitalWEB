@@ -14,8 +14,10 @@ class EditReception extends StatefulWidget {
     "Orthopedic",
     "Pediatrician"
   ];
+  final Map? details;
+  final int? id ;
 
-   EditReception({super.key, required this.isediting});
+   EditReception({super.key, required this.isediting, this.details, this.id});
 
   @override
   State<EditReception> createState() => _EditReceptionState();
@@ -23,6 +25,23 @@ class EditReception extends StatefulWidget {
 
 class _EditReceptionState extends State<EditReception> {
   ReceptionController receptionController=ReceptionController();
+  @override
+  void initState() {
+    if (widget.details != null) {
+      receptionController.controllers[1].text = widget.details!['fullName'];
+      receptionController.controllers[3].text = widget.details!['phoneNumber'];
+      receptionController.controllers[2].text = widget.details!['fatherName'];
+      receptionController.controllers[0].text = widget.details!['motherName'];
+      receptionController.controllers[4].text = widget.details!['internationalNumber'];
+      receptionController.controllers[5].text = widget.details!['currentLocation'];
+      receptionController.controllers[7].text = widget.details!['gender']== 1 ? 'Male' : "Female";
+      receptionController.controllers[6].text = widget.details!['birthdate'];
+    }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await BlocProvider.of<ReceptionCubit>(context).getReceptionDetails(widget.id!);
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -112,7 +131,7 @@ class _EditReceptionState extends State<EditReception> {
   Widget ButtonToAddReception(double height, double width) {
     return BlocListener<ReceptionCubit, ReceptionState>(
   listener: (context, state) {
-    if(state.receptionStatus==ReceptionStatus.success){
+    if(state.receptionStatus==ReceptionStatus.success&& widget.isediting==false){
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Reception created successfully"))) ;
     }
     // TODO: implement listener
@@ -130,7 +149,7 @@ class _EditReceptionState extends State<EditReception> {
         width: width / 8,
         child: Center(
           child: InkWell(
-            onTap: ()async {
+            onTap:widget.isediting==false? ()async {
               await BlocProvider.of<ReceptionCubit>(context).createReception(
                   receptionController.controllers[1].text,
                   receptionController.controllers[3].text,
@@ -141,7 +160,18 @@ class _EditReceptionState extends State<EditReception> {
                   receptionController.controllers[7].text,
                   receptionController.controllers[6].text,
                 );
-            },
+            }: () async {
+    await BlocProvider.of<ReceptionCubit>(context).edit_Reception(
+        receptionController.controllers[1].text,
+        receptionController.controllers[3].text,
+        receptionController.controllers[2].text,
+        receptionController.controllers[0].text,
+        receptionController.controllers[4].text,
+        receptionController.controllers[5].text,
+        receptionController.controllers[7].text,
+        receptionController.controllers[6].text,
+    widget.id!
+    );},
             child: Text(
               widget.isediting == true ? 'تعديل' : 'انشاء حساب',
               style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),

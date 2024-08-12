@@ -5,7 +5,9 @@ enum ReceptionStatus {
   loading ,
   success ,
   failure ,
-  initial
+  initial,
+  deletedone,
+  editdone,
 }
 
 class ReceptionState extends Equatable {

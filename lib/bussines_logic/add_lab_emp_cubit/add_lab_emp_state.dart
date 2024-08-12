@@ -4,7 +4,9 @@ enum Add_Lab_Emp_Status{
   loading ,
   success ,
   failure ,
-  initial
+  initial,
+  deletedone,
+  editdone,
 }
 class Add_Lab_Emp_State extends Equatable{
   final Add_Lab_Emp_Status add_lab_emp_status;

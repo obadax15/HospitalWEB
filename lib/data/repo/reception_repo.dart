@@ -21,4 +21,29 @@ class ReceptionRepo {
       rethrow ;
     }
   }
+  static Future deleteReception(int id) async {
+    try {
+      var response = await ReceptionApi.deleteReception(id);
+      return jsonDecode(response) ;
+    } catch (e) {
+      rethrow ;
+    }
+  }
+
+  static Future getReceptionDetails(int id) async {
+    try {
+      var response = await ReceptionApi.getReceptionDetails(id);
+      return jsonDecode(response);
+    } catch (e) {
+      rethrow ;
+    }
+  }
+  static Future edit_Reception(String name , String number , String father , String mother , String inNumber , String location , String gender , String birthdate , int id) async {
+    try {
+      var response = await ReceptionApi.edit_Reception(name, number, father, mother, inNumber, location, gender, birthdate, id);
+      return jsonDecode(response) ;
+    } catch (e) {
+      rethrow ;
+    }
+  }
 }

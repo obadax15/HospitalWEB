@@ -5,6 +5,7 @@ import 'package:hospital/bussines_logic/reception_cubit/reception_cubit.dart';
 import 'package:hospital/constances/mycolor.dart';
 import 'package:hospital/presntation/Screens/admin/add_Reception/Screens/editReception.dart';
 import 'package:hospital/presntation/Screens/admin/add_Reception/addreception.dart';
+import 'package:hospital/presntation/Screens/admin/add_Reception/widgets/reception_info.dart';
 
 class ShowReception extends StatefulWidget {
   @override
@@ -79,6 +80,7 @@ class _ShowReceptionState extends State<ShowReception> {
                 ) ;
               }
               List rec = BlocProvider.of<ReceptionCubit>(context).reception;
+
               return Expanded(
                 child: GridView.builder(
                   physics: const BouncingScrollPhysics(),
@@ -126,9 +128,7 @@ class _ShowReceptionState extends State<ShowReception> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => EditReception(
-                                isediting: true,
-                              ),
+                              builder: (context) => Reception_Info(id: rec[index]['id'])
                             ),
                           );
                         },

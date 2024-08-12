@@ -18,7 +18,7 @@ class App_Router {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-          builder: (_) =>  Start_Reception_Screen());
+          builder: (_) =>  Manager_Screen());
 
     }
 
