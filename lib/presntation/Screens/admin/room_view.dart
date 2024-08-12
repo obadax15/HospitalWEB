@@ -2,6 +2,7 @@ import 'package:flutter/material.dart ';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/bussines_logic/room_cubit/room_cubit.dart';
 import 'package:hospital/constances/mycolor.dart';
+import 'package:hospital/presntation/Screens/checks/patient_grid_view.dart';
 
 class Room_View extends StatefulWidget {
   const Room_View({Key? key}) : super(key: key);
@@ -106,34 +107,39 @@ class _Room_ViewState extends State<Room_View> {
                       ),
                       itemCount: room.length,
                       itemBuilder: (context, index) {
-                        return Container(
-                          padding: const EdgeInsets.all(25),
-                          decoration: BoxDecoration(
-                            color: room[index]['status'] == 'available'
-                                ? Colors.greenAccent.withOpacity(0.2)
-                                : Colors.red.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.bed,
-                                size: 25,
-                                color: room[index]['status'] == 'available'
-                                    ? Colors.green
-                                    : Colors.red,
-                              ),
-                              Text(
-                                room[index]['roomNumber'].toString(),
-                                style: TextStyle(
-                                    color: room[index]['status'] == 'available'
-                                        ? Colors.green
-                                        : Colors.red,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                        return InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (_) => PatientGridView(roomID: room[index]['id']))) ;
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(25),
+                            decoration: BoxDecoration(
+                              color: room[index]['status'] == 'available'
+                                  ? Colors.greenAccent.withOpacity(0.2)
+                                  : Colors.red.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.bed,
+                                  size: 25,
+                                  color: room[index]['status'] == 'available'
+                                      ? Colors.green
+                                      : Colors.red,
+                                ),
+                                Text(
+                                  room[index]['roomNumber'].toString(),
+                                  style: TextStyle(
+                                      color: room[index]['status'] == 'available'
+                                          ? Colors.green
+                                          : Colors.red,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },

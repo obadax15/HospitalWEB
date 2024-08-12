@@ -10,4 +10,12 @@ class Patient_View_Repo{
 
     } catch(e){rethrow;}
   }
+
+  static Future ViewPatientIn()async{
+    try{
+      var response=await Patient_View_Api.ViewPatientIn();
+      return jsonDecode(response);
+
+    } catch(e){rethrow;}
+  }
 }

@@ -16,4 +16,14 @@ class PatientCubit extends Cubit<PatientState> {
       emit(state.copyWith(patientStatus: PatientStatus.failure)) ;
     }
   }
+
+  Future edit(String name , String number , String father , String mother , String inNumber , String location , String gender , String birthdate , String work , String social , int id) async {
+    emit(state.copyWith(patientStatus: PatientStatus.loading)) ;
+    try {
+      await PatientRepo.edit(name, number, father, mother, inNumber, location, gender, birthdate, work, social , id);
+      emit(state.copyWith(patientStatus: PatientStatus.success)) ;
+    } catch (e) {
+      emit(state.copyWith(patientStatus: PatientStatus.failure)) ;
+    }
+  }
 }

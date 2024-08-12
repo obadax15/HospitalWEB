@@ -5,8 +5,11 @@ import 'package:hospital/constances/mycolor.dart';
 import 'package:hospital/presntation/Screens/reception/screens/addPatient/controller/addpatierntcontroller.dart';
 
 class Add_Patient extends StatefulWidget {
+  final Map? details;
 
-  Add_Patient({super.key});
+  final int? id;
+
+  const Add_Patient({super.key, this.details, this.id});
 
   @override
   State<Add_Patient> createState() => _CharacterEditScreenState();
@@ -16,15 +19,28 @@ class _CharacterEditScreenState extends State<Add_Patient> {
   Patient patient = Patient();
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.details != null) {
+      patient.controllers[1].text = widget.details!['fullName'];
+      patient.controllers[3].text = widget.details!['phoneNumber'];
+      patient.controllers[2].text = widget.details!['fatherName'];
+      patient.controllers[0].text = widget.details!['motherName'];
+      patient.controllers[4].text = widget.details!['work'];
+      patient.controllers[5].text = widget.details!['currentLocation'];
+      patient.controllers[7].text =
+          widget.details!['gender'] == 1 ? 'Male' : "Female";
+      patient.controllers[6].text = widget.details!['birthdate'];
+      patient.controllers[8].text = widget.details!['socialStatus'];
+      patient.controllers[9].text = widget.details!['internationalNumber'];
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var height = MediaQuery
-        .of(context)
-        .size
-        .height;
-    var width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
     List<String> patientinfo = [
       'اسم ونسبة الأم',
       '',
@@ -37,52 +53,55 @@ class _CharacterEditScreenState extends State<Add_Patient> {
       'الحالة الاجتماعية',
       'الرقم الوطني',
     ];
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(right: 30.0, left: 30, top: 30),
-          child: AppBarContianer(width, height),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        Expanded(
-          child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, // Number of columns
-              childAspectRatio: height / 120, crossAxisSpacing: width / 30,
-            ),
-            itemCount: patientinfo.length,
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: width / 13,
-                    ),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        index == 1 ? 'الاسم الثلاثي' : patientinfo[index],
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 30.0, left: 30, top: 30),
+            child: AppBarContianer(width, height),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Expanded(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, // Number of columns
+                childAspectRatio: height / 120, crossAxisSpacing: width / 30,
+              ),
+              itemCount: patientinfo.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: width / 13,
+                      ),
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          index == 1 ? 'الاسم الثلاثي' : patientinfo[index],
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: width / 3,
-                    height: height / 18,
-                    child: TextFieldToAddInformationReception(index),
-                  ),
-                ],
-              );
-            },
+                    SizedBox(
+                      width: width / 3,
+                      height: height / 18,
+                      child: TextFieldToAddInformationReception(index),
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
-        ),
-        ButtonToAddPatient(height, width),
-      ],
+          ButtonToAddPatient(height, width),
+        ],
+      ),
     );
   }
 
@@ -99,9 +118,9 @@ class _CharacterEditScreenState extends State<Add_Patient> {
       ),
       child: Center(
           child: Text(
-            'إضافة مريض',
-            style: const TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
-          )),
+        widget.details != null ? 'تعديل مريض' : 'إضافة مريض',
+        style: const TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
+      )),
     );
   }
 
@@ -109,7 +128,13 @@ class _CharacterEditScreenState extends State<Add_Patient> {
     return BlocListener<PatientCubit, PatientState>(
         listener: (context, state) {
           if (state.patientStatus == PatientStatus.success) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("patient created successfully")));
+            if (widget.details != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("patient edited successfully")));
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("patient created successfully")));
+            }
           }
         },
         child: Align(
@@ -126,7 +151,8 @@ class _CharacterEditScreenState extends State<Add_Patient> {
             child: Center(
               child: InkWell(
                 onTap: () async {
-                  await BlocProvider.of<PatientCubit>(context).createPatient(
+                  if (widget.details != null) {
+                    await BlocProvider.of<PatientCubit>(context).edit(
                       patient.controllers[1].text,
                       patient.controllers[3].text,
                       patient.controllers[2].text,
@@ -136,11 +162,29 @@ class _CharacterEditScreenState extends State<Add_Patient> {
                       patient.controllers[7].text,
                       patient.controllers[6].text,
                       patient.controllers[4].text,
-                      patient.controllers[8].text);
+                      patient.controllers[8].text,
+                      widget.id!,
+                    );
+                  } else {
+                    await BlocProvider.of<PatientCubit>(context).createPatient(
+                        patient.controllers[1].text,
+                        patient.controllers[3].text,
+                        patient.controllers[2].text,
+                        patient.controllers[0].text,
+                        patient.controllers[9].text,
+                        patient.controllers[5].text,
+                        patient.controllers[7].text,
+                        patient.controllers[6].text,
+                        patient.controllers[4].text,
+                        patient.controllers[8].text);
+                  }
                 },
                 child: Text(
-                  'اضافة',
-                  style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                  widget.details != null ? 'تعديل' : 'اضافة',
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -158,12 +202,11 @@ class _CharacterEditScreenState extends State<Add_Patient> {
           borderRadius: BorderRadius.circular(8.0), // Customize borderRadius
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Color.fromRGBO(173, 173, 173, 1), width: 1.0),
+          borderSide: const BorderSide(
+              color: Color.fromRGBO(173, 173, 173, 1), width: 1.0),
           borderRadius: BorderRadius.circular(8.0), // Customize borderRadius
         ),
       ),
     );
   }
 }
-
-

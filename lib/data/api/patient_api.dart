@@ -35,4 +35,35 @@ class PatientApi {
       rethrow;
     }
   }
+
+  static Future edit(String name , String number , String father , String mother , String inNumber , String location , String gender , String birthdate , String work , String social , int id) async {
+    try {
+      var response = await http.post(
+        Uri.parse("${Strings.api}/patient/editPatientInformation/$id"),
+        headers: {
+          "Accept": "application/json",
+          'Content-Type': 'application/json',
+          "token" : Token.token
+        },
+        body: jsonEncode({
+          "fullName" : name ,
+          "phoneNumber" : number ,
+          "fatherName" : father ,
+          "motherName" : mother ,
+          "internationalNumber" : inNumber ,
+          "currentLocation" : location ,
+          "gender" : gender == 'Male' ? true : false ,
+          "birthdate" : birthdate,
+          "work" : work,
+          "socialStatus" : social
+        }),
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return response.body;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

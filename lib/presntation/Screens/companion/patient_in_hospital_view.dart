@@ -7,28 +7,26 @@ import 'package:hospital/bussines_logic/view-patient_cubit/view_patient_cubit.da
 import 'package:hospital/constances/mycolor.dart';
 import 'package:hospital/presntation/Screens/companion/create_companion_screen.dart';
 import 'package:hospital/presntation/Screens/companion/get_companion_screen.dart';
+import 'package:hospital/presntation/Screens/reception/screens/addPatient/add_Patient.dart';
 
-import '../reception/screens/addPatient/add_Patient.dart';
-
-class Patient_View extends StatefulWidget {
-  const Patient_View({Key? key}) : super(key: key);
+class PatientInHospitalView extends StatefulWidget {
+  const PatientInHospitalView({super.key});
 
   @override
-  State<Patient_View> createState() => _Patient_ViewState();
+  State<PatientInHospitalView> createState() => _PatientInHospitalViewState();
 }
 
-class _Patient_ViewState extends State<Patient_View> {
+class _PatientInHospitalViewState extends State<PatientInHospitalView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await BlocProvider.of<ViewPatientCubit>(context).getPatient();
+      await BlocProvider.of<ViewPatientCubit>(context).getPatientIn();
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    bool situation = false;
     return Expanded(
       child: BlocBuilder<ViewPatientCubit, View_Patient_State>(
         builder: (context, state) {
@@ -37,12 +35,12 @@ class _Patient_ViewState extends State<Patient_View> {
               color: MyColor.mykhli,
             );
           }
-          if (BlocProvider.of<ViewPatientCubit>(context).rr == null) {
+          if (BlocProvider.of<ViewPatientCubit>(context).rr3 == null) {
             return const CircularProgressIndicator(
               color: MyColor.mykhli,
             );
           }
-          List rr = BlocProvider.of<ViewPatientCubit>(context).rr;
+          List rr = BlocProvider.of<ViewPatientCubit>(context).rr3;
           return Padding(
             padding: const EdgeInsets.all(10),
             child: Expanded(
@@ -63,7 +61,7 @@ class _Patient_ViewState extends State<Patient_View> {
                             Text(
                               'ابحث هنا',
                               style:
-                                  TextStyle(color: Colors.grey, fontSize: 12),
+                              TextStyle(color: Colors.grey, fontSize: 12),
                             ),
                           ],
                         ),
@@ -131,16 +129,17 @@ class _Patient_ViewState extends State<Patient_View> {
                           Expanded(
                             child: ListView.builder(
                               itemCount: rr.length,
-                              itemBuilder: (_, index) => InkWell(
-                                onDoubleTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => Add_Patient(details: rr[index], id: rr[index]['id'],))) ;
-                                },
-                                child: Padding(
+                              itemBuilder: (_, index) {
+                                return InkWell(
+                                  onDoubleTap: () {
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => Add_Patient(details: rr[index], id: rr[index]['id'],))) ;
+                                  },
+                                  child: Padding(
                                   padding: const EdgeInsets.only(
                                       left: 50.0, right: 20),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       IconButton(
                                         onPressed: () {
@@ -156,11 +155,11 @@ class _Patient_ViewState extends State<Patient_View> {
                                                         color: MyColor.mykhli,
                                                         fontSize: 18,
                                                         fontWeight:
-                                                            FontWeight.w400),
+                                                        FontWeight.w400),
                                                   ),
                                                   content: Column(
                                                     mainAxisSize:
-                                                        MainAxisSize.min,
+                                                    MainAxisSize.min,
                                                     children: [
                                                       InkWell(
                                                         onTap: () {
@@ -169,18 +168,18 @@ class _Patient_ViewState extends State<Patient_View> {
                                                                   builder: (_) =>
                                                                       CreateCompanionScreen(
                                                                           id: rr[index]
-                                                                              [
-                                                                              'id'])));
+                                                                          [
+                                                                          'id'])));
                                                         },
                                                         child: const Text(
                                                           'اضافة مرافق',
                                                           style: TextStyle(
                                                               color:
-                                                                  MyColor.myBlue2,
+                                                              MyColor.myBlue2,
                                                               fontSize: 18,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
+                                                              FontWeight
+                                                                  .w400),
                                                         ),
                                                       ),
                                                       const SizedBox(height: 10),
@@ -195,19 +194,19 @@ class _Patient_ViewState extends State<Patient_View> {
                                                                   builder: (_) =>
                                                                       GetCompanionScreen(
                                                                         id: rr[index]
-                                                                            [
-                                                                            'id'],
+                                                                        [
+                                                                        'id'],
                                                                       )));
                                                         },
                                                         child: const Text(
                                                           'عرض المرافق',
                                                           style: TextStyle(
                                                               color:
-                                                                  MyColor.myBlue2,
+                                                              MyColor.myBlue2,
                                                               fontSize: 18,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
+                                                              FontWeight
+                                                                  .w400),
                                                         ),
                                                       )
                                                     ],
@@ -229,13 +228,13 @@ class _Patient_ViewState extends State<Patient_View> {
                                             if (rr[index]['deleted_at'] == null) {
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(const SnackBar(
-                                                      content: Text(
-                                                          'check out successfully')));
+                                                  content: Text(
+                                                      'check out successfully')));
                                             } else {
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(const SnackBar(
-                                                      content: Text(
-                                                          'restore successfully')));
+                                                  content: Text(
+                                                      'restore successfully')));
                                             }
                                           }
                                         },
@@ -243,13 +242,13 @@ class _Patient_ViewState extends State<Patient_View> {
                                           onTap: () async {
                                             if (rr[index]['deleted_at'] == null) {
                                               await BlocProvider.of<CheckCubit>(
-                                                      context)
+                                                  context)
                                                   .checkOut(rr[index]['id']);
                                             } else {
                                               await BlocProvider.of<CheckCubit>(
-                                                      context)
+                                                  context)
                                                   .restorePatient(
-                                                      rr[index]['id']);
+                                                  rr[index]['id']);
                                             }
                                           },
                                           child: Container(
@@ -258,11 +257,11 @@ class _Patient_ViewState extends State<Patient_View> {
                                             height: 30,
                                             decoration: BoxDecoration(
                                               color:
-                                                  rr[index]['deleted_at'] == null
-                                                      ? Colors.green
-                                                      : Colors.red,
+                                              rr[index]['deleted_at'] == null
+                                                  ? Colors.green
+                                                  : Colors.red,
                                               borderRadius:
-                                                  BorderRadius.circular(12),
+                                              BorderRadius.circular(12),
                                             ),
                                             child: Text(
                                               rr[index]['deleted_at'] == null
@@ -292,8 +291,9 @@ class _Patient_ViewState extends State<Patient_View> {
                                       ),
                                     ],
                                   ),
-                                ),
-                              ),
+                                                                ),
+                                );
+                              },
                             ),
                           )
                         ],

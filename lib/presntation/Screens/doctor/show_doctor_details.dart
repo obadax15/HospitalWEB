@@ -165,7 +165,7 @@ class _ShowDoctorDetailsState extends State<ShowDoctorDetails> {
               return Directionality(
                 textDirection: TextDirection.rtl,
                 child: AlertDialog(
-                  title: Text(
+                  title: const Text(
                     'خيارات',
                     style: TextStyle(
                         color: MyColor.mykhli,

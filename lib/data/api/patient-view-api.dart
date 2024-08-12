@@ -16,4 +16,20 @@ class Patient_View_Api{
     }catch(e){rethrow;
     }
   }
+
+  static Future ViewPatientIn()async{
+    try{
+      var response=await http.get(
+        Uri.parse("${Strings.api}/patient/get_checkinPatient"),
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      );
+      if(response.statusCode==200){
+        return response.body;
+      }
+
+    }catch(e){rethrow;
+    }
+  }
 }

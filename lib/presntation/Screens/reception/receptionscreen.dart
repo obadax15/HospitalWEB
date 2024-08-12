@@ -3,13 +3,16 @@ import 'package:hospital/constances/mycolor.dart';
 import 'package:hospital/presntation/Screens/admin/add_Reception/Screens/showReception.dart';
 import 'package:hospital/presntation/Screens/admin/manager_Screen/widgets/navigationDrawer.dart';
 import 'package:hospital/presntation/Screens/admin/manager_Screen/widgets/showEmployee.dart';
+import 'package:hospital/presntation/Screens/admin/patient_info.dart';
+import 'package:hospital/presntation/Screens/admin/room_view.dart';
+import 'package:hospital/presntation/Screens/checks/patient_grid_view.dart';
+import 'package:hospital/presntation/Screens/companion/patient_in_hospital_view.dart';
 import 'package:hospital/presntation/Screens/reception/screens/addPatient/add_Patient.dart';
 import 'package:hospital/presntation/Screens/reception/screens/addPatient/controller/addpatierntcontroller.dart';
 import 'package:hospital/presntation/Screens/reception/screens/receptionscreens/widgets/receptionnavigation.dart';
 
 class Reception_Screen extends StatefulWidget {
-   Reception_Screen({super.key, this.newcurrentIndex});
-   final  newcurrentIndex;
+   Reception_Screen({super.key});
   @override
   State<Reception_Screen> createState() => _Manager_ScreenState();
 }
@@ -29,9 +32,9 @@ class _Manager_ScreenState extends State<Reception_Screen> {
         child: Row(mainAxisAlignment: MainAxisAlignment.end,
           children: [
             // index1==1?Container(width: 20,height: 20,color: Colors.red,):Container(width: 20,height: 20,color: Colors.green,)
-           widget.newcurrentIndex == 1 ? Expanded(child: ExpandableListEmployee()) :widget.newcurrentIndex==0?Expanded(child: Add_Patient()): Container(),
+           currentIndex == 1 ? const Patient_View() :currentIndex==0?Expanded(child: Add_Patient()): currentIndex==2? const PatientInHospitalView() : Room_View(),
 
-            buildDrawerInContianer(height, width,widget.newcurrentIndex),
+            buildDrawerInContianer(height, width),
             Container(
               width: width / 40,
               decoration: const BoxDecoration(
@@ -45,7 +48,7 @@ class _Manager_ScreenState extends State<Reception_Screen> {
     );
   }
 
-  Container buildDrawerInContianer(double height, double width,index1) {
+  Container buildDrawerInContianer(double height, double width) {
     return Container(
       decoration:  BoxDecoration(
         boxShadow: MyColor.boxshadow,
@@ -64,11 +67,10 @@ class _Manager_ScreenState extends State<Reception_Screen> {
         Recption_Navigation(
           changeIndex: (index) {
             setState(() {
-               index1=index;
-
+               currentIndex=index;
             });
           },
-          currentindex: index1  ,
+          currentindex: currentIndex  ,
         ),
       ]),
     );

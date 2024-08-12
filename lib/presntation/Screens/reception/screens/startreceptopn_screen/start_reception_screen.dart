@@ -38,7 +38,7 @@ class _Start_Reception_ScreenState extends State<Start_Reception_Screen> {
             alignment: Alignment.centerRight,
             child: Container(
               width: width / 1.5,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: MyColor.myGrey,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(35),
@@ -53,9 +53,9 @@ class _Start_Reception_ScreenState extends State<Start_Reception_Screen> {
                       height: height / 6,
                       width: width / 6,
                     ),
-                    BuildPushContainer('إنشاء حساب مريض',(){Navigator.push(context, MaterialPageRoute(builder: (c)=>Reception_Screen(newcurrentIndex: 0,)));},width),
-                    BuildPushContainer('البحث عن مريض',(){Navigator.push(context, MaterialPageRoute(builder: (c)=>Reception_Screen(newcurrentIndex: 1,)));},width),
-                    BuildPushContainer('رؤية الغرف',(){Navigator.push(context, MaterialPageRoute(builder: (c)=>Reception_Screen(newcurrentIndex: 2,)));},width),
+                    BuildPushContainer('إنشاء حساب مريض',(){Navigator.push(context, MaterialPageRoute(builder: (c)=>Reception_Screen()));},width),
+                    BuildPushContainer('البحث عن مريض',(){Navigator.push(context, MaterialPageRoute(builder: (c)=>Reception_Screen()));},width),
+                    BuildPushContainer('رؤية الغرف',(){Navigator.push(context, MaterialPageRoute(builder: (c)=>Reception_Screen()));},width),
                   ],
                 ),
               ),
