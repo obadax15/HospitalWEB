@@ -63,6 +63,7 @@ class _Manager_ScreenState extends State<Manager_Screen> {
                 color: Colors.black,
               ),
               Navigation_Drawer(
+                people: ['معلومات السكرتارية', 'معلومات الموظفين', 'معلومات المرضى','عرض الغرف'],
                 changeIndex: (index) {
                   setState(() {
                     currentIndex = index;

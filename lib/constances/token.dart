@@ -1,3 +1,3 @@
 class Token {
-  static String token = '' ;
+  static String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcklEIjoyLCJ0eXBlIjoib2JqZWN0Iiwic3BlY2lhbGlzdCI6IlNlY3JldGFyeSIsImlhdCI6MTcyMjAwMjI1NX0.6rT1Qy8TqZgVCu3xrSXdxZTszw4nfehR2KisOByzweE' ;
 }
