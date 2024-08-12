@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/bussines_logic/reception_cubit/reception_cubit.dart';
+import 'package:hospital/bussines_logic/show_rad_emp_cubit/show_rad_emp_cubit.dart';
 import 'package:hospital/constances/mycolor.dart';
 import 'package:hospital/presntation/Screens/admin/add_Reception/Screens/editReception.dart';
 import 'package:hospital/presntation/Screens/admin/add_Reception/addreception.dart';
 import 'package:hospital/presntation/Screens/choose-labrotary-screen/widget/add_lab_forms.dart';
+import 'package:hospital/presntation/Screens/choose-labrotary-screen/widget/add_rad_forms.dart';
 
 class Show_RadioGraph extends StatefulWidget {
   @override
@@ -16,7 +18,12 @@ class _Show_RadioGraph extends State<Show_RadioGraph> {
   final List<ReceptionController> characters = [];
   TextEditingController _searchController = TextEditingController();
 
-
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await BlocProvider.of<ShowRadEmpCubit>(context).showRadEmp();
+    });    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +34,14 @@ class _Show_RadioGraph extends State<Show_RadioGraph> {
     ];
 
 
+    return BlocBuilder<ShowRadEmpCubit, Show_Rad_Emp_State>(
+  builder: (context, state) {
+    if(state.show_rad_emp_status==Show_Rad_Emp_Status.loading){
+      return CircularProgressIndicator(color: MyColor.mykhli,);
+    }if(BlocProvider.of<ShowRadEmpCubit>(context).rr==null){
+      return CircularProgressIndicator(color: MyColor.mykhli,);
+    }
+    List rr=BlocProvider.of<ShowRadEmpCubit>(context).rr['nonMedicals'];
     return Padding(
       padding: const EdgeInsets.all(15),
       child: Column(
@@ -46,7 +61,7 @@ class _Show_RadioGraph extends State<Show_RadioGraph> {
               controller: _searchController,
               decoration: InputDecoration(
                 suffixIcon: const Icon(Icons.search_outlined),
-                hintText: 'Search Reception',
+                hintText: 'Search Radiograph Employee',
                 border: InputBorder.none,
                 hintStyle: TextStyle(color: Colors.black.withOpacity(0.7)),
               ),
@@ -72,7 +87,7 @@ class _Show_RadioGraph extends State<Show_RadioGraph> {
                   crossAxisSpacing: 50,
                   mainAxisSpacing: 20
               ),
-              itemCount: 3,
+              itemCount: rr.length,
               itemBuilder: (context, index) {
                 return Container(
                   width: width / 7,
@@ -97,7 +112,7 @@ class _Show_RadioGraph extends State<Show_RadioGraph> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'ads',
+                              rr[index]['fullName'],
                               style: TextStyle(fontSize: width / 80),
                             ),
                           ],
@@ -108,7 +123,7 @@ class _Show_RadioGraph extends State<Show_RadioGraph> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Add_Lab_Forms(
+                          builder: (context) => Add_Rad_Forms(
                             isediting: true,
                           ),
                         ),
@@ -122,7 +137,7 @@ class _Show_RadioGraph extends State<Show_RadioGraph> {
 
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => Add_Lab_Forms(isediting: false)));
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => Add_Rad_Forms(isediting: false)));
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(MyColor.mykhli),
@@ -135,5 +150,7 @@ class _Show_RadioGraph extends State<Show_RadioGraph> {
         ],
       ),
     );
+  },
+);
   }
 }

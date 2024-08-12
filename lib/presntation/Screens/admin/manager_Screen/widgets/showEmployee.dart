@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hospital/constances/mycolor.dart';
-import 'package:hospital/presntation/Screens/choose-labrotary-screen/choose-labrotary-sc.dart';
+import 'package:hospital/presntation/Screens/choose-labrotary-screen/choose-lab-rad-sc.dart';
 
 class ExpandableListEmployee extends StatefulWidget {
   @override
