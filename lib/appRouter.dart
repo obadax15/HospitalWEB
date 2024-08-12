@@ -6,7 +6,6 @@ import 'package:hospital/presntation/Screens/admin/manager_Screen/managerScreen.
 import 'package:hospital/presntation/Screens/admin/show_info/showEmployeeInfo.dart';
 import 'package:hospital/presntation/Screens/forms/make_forms/Screens/lab_form.dart';
 import 'package:hospital/presntation/Screens/login/login_Screen.dart';
-import 'package:hospital/presntation/Screens/nurse_time/nurse_time_screen.dart';
 import 'package:hospital/presntation/Screens/reception/receptionscreen.dart';
 import 'package:hospital/presntation/Screens/reception/screens/startreceptopn_screen/start_reception_screen.dart';
 
@@ -18,7 +17,7 @@ class App_Router {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-          builder: (_) =>  Nurse_Time());
+          builder: (_) =>  Manager_Screen());
 
     }
 
