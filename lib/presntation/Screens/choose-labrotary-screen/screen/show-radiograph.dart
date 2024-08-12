@@ -5,6 +5,7 @@ import 'package:hospital/bussines_logic/reception_cubit/reception_cubit.dart';
 import 'package:hospital/constances/mycolor.dart';
 import 'package:hospital/presntation/Screens/admin/add_Reception/Screens/editReception.dart';
 import 'package:hospital/presntation/Screens/admin/add_Reception/addreception.dart';
+import 'package:hospital/presntation/Screens/choose-labrotary-screen/widget/add_lab_forms.dart';
 
 class Show_RadioGraph extends StatefulWidget {
   @override
@@ -107,7 +108,7 @@ class _Show_RadioGraph extends State<Show_RadioGraph> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => EditReception(
+                          builder: (context) => Add_Lab_Forms(
                             isediting: true,
                           ),
                         ),
@@ -121,7 +122,7 @@ class _Show_RadioGraph extends State<Show_RadioGraph> {
 
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => EditReception(isediting: false)));
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => Add_Lab_Forms(isediting: false)));
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(MyColor.mykhli),
