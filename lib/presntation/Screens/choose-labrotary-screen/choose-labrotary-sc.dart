@@ -5,15 +5,17 @@ import 'package:hospital/presntation/Screens/admin/manager_Screen/widgets/naviga
 import 'package:hospital/presntation/Screens/admin/manager_Screen/widgets/showEmployee.dart';
 import 'package:hospital/presntation/Screens/admin/patient_info.dart';
 import 'package:hospital/presntation/Screens/admin/room_view.dart';
+import 'package:hospital/presntation/Screens/choose-labrotary-screen/screen/show-labrotary.dart';
+import 'package:hospital/presntation/Screens/choose-labrotary-screen/screen/show-radiograph.dart';
 
-class Manager_Screen extends StatefulWidget {
-  const Manager_Screen({super.key});
+class ChooseLabRad_Screen extends StatefulWidget {
+  const ChooseLabRad_Screen({super.key});
 
   @override
-  State<Manager_Screen> createState() => _Manager_ScreenState();
+  State<ChooseLabRad_Screen> createState() => _ChooseLabRad_Screen();
 }
 
-class _Manager_ScreenState extends State<Manager_Screen> {
+class _ChooseLabRad_Screen extends State<ChooseLabRad_Screen> {
   int currentIndex = 0;
   int index1 = 0;
   bool onclick = false;
@@ -30,7 +32,7 @@ class _Manager_ScreenState extends State<Manager_Screen> {
         child: Row(mainAxisAlignment: MainAxisAlignment.end,
           children: [
             // index1==1?Container(width: 20,height: 20,color: Colors.red,):Container(width: 20,height: 20,color: Colors.green,)
-            currentIndex == 0 ? Expanded(child: ExpandableListEmployee()) :currentIndex==1?Expanded(child: ShowReception()):currentIndex==3? Room_View():Patient_View(),
+            currentIndex == 0 ? Expanded(child: Show_Labrotary()) :Expanded(child: Show_RadioGraph()),
 
             buildDrawerInContianer(height, width),
             Container(
@@ -48,30 +50,30 @@ class _Manager_ScreenState extends State<Manager_Screen> {
 
   Container buildDrawerInContianer(double height, double width) {
     return Container(
-            decoration:  BoxDecoration(
-              boxShadow: MyColor.boxshadow,
-              borderRadius: const BorderRadius.only(topLeft: Radius.circular(25), bottomLeft: Radius.circular(25)),
-              color: Colors.white,
-            ),
-            height: height,
-            width: width / 8,
-            child: Column(children: [
-              SizedBox(
-                height: height / 12,
-              ),
-              const Divider(
-                color: Colors.black,
-              ),
-              Navigation_Drawer(
-                people: ['معلومات السكرتارية', 'معلومات الموظفين', 'معلومات المرضى','عرض الغرف'],
-                changeIndex: (index) {
-                  setState(() {
-                    currentIndex = index;
-                  });
-                },
-                currentindex: currentIndex,
-              ),
-            ]),
-          );
+      decoration:  BoxDecoration(
+        boxShadow: MyColor.boxshadow,
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(25), bottomLeft: Radius.circular(25)),
+        color: Colors.white,
+      ),
+      height: height,
+      width: width / 8,
+      child: Column(children: [
+        SizedBox(
+          height: height / 12,
+        ),
+        const Divider(
+          color: Colors.black,
+        ),
+        Navigation_Drawer(
+          people: ['فني مخبري ','فني اشعة'],
+          changeIndex: (index) {
+            setState(() {
+              currentIndex = index;
+            });
+          },
+          currentindex: currentIndex,
+        ),
+      ]),
+    );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hospital/constances/mycolor.dart';
+import 'package:hospital/presntation/Screens/choose-labrotary-screen/choose-labrotary-sc.dart';
 
 class ExpandableListEmployee extends StatefulWidget {
   @override
@@ -55,24 +56,30 @@ class _ExpandableListEmployeeState extends State<ExpandableListEmployee> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(people[index]),
-                                Icon(
-                                  _isExpanded[index] ? Icons.expand_less : Icons.expand_more,
-                                ),
+                                // Icon(
+                                //   _isExpanded[index] ? Icons.expand_less : Icons.expand_more,
+                                // ),
                               ],
                             )
                           ],
                         ),
-                        onTap: () {
-                          setState(() {
-                            _isExpanded[index] = !_isExpanded[index];
-                          });
-                        },
-                      ),
+                        // onTap: () {
+                        //   setState(() {
+                        //     _isExpanded[index] = !_isExpanded[index];
+                        //   });
+                        // },
+
+                     onTap: (){
+                          if(index==0){
+Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ChooseLabRad_Screen()));
+                          }
+
+                     }, ),
                     ),
-                    if (_isExpanded[index])
-                      Column(
-                        children: _getSubItems(index),
-                      ),
+                    // if (_isExpanded[index])
+                    //   Column(
+                    //     children: _getSubItems(index),
+
                   ],
                 ),
               );
@@ -83,61 +90,61 @@ class _ExpandableListEmployeeState extends State<ExpandableListEmployee> {
     );
   }
 
-  List<Widget> _getSubItems(int index) {
-    switch (index) {
-      case 0:
-        return [
-          ListOfSatff(
-              ['فني المخبر', 'فني عمليات', 'فني الاشغة'], ['images/img_1.png', 'images/img_2.png', 'images/img_3.png'])
-        ];
-      case 1:
-        return [
-          ListOfSatff(
-              ['فني المخبر', 'فني عمليات', 'فني الاشغة'], ['images/img_1.png', 'images/img_2.png', 'images/img_3.png'])
-        ];
-      case 2:
-        return [
-          ListOfSatff(
-              ['فني المخبر', 'فني عمليات', 'فني الاشغة'], ['images/img_1.png', 'images/img_2.png', 'images/img_3.png'])
-        ];
-
-      default:
-        return [];
-    }
-  }
-
-  Widget ListOfSatff(List<String> names, List<String> listOfImages) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: names.length,
-      itemBuilder: (ctx, index) => Container(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  boxShadow: MyColor.boxshadow,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(12),
-                  ),
-                  color: Colors.white,
-                ),
-                child: Column(
-                  children: [
-                    Image.asset(
-                      listOfImages[index],
-                      height: height / 9,
-                      width: width / 9,
-                    ),
-                    Text(names[index]),
-                  ],
-                )),
-          ],
-        ),
-      ),
-    );
-  }
+  // List<Widget> _getSubItems(int index) {
+  //   switch (index) {
+  //     case 0:
+  //       return [
+  //         ListOfSatff(
+  //             ['فني المخبر', 'فني عمليات', 'فني الاشغة'], ['images/img_1.png', 'images/img_2.png', 'images/img_3.png'])
+  //       ];
+  //     case 1:
+  //       return [
+  //         ListOfSatff(
+  //             ['فني المخبر', 'فني عمليات', 'فني الاشغة'], ['images/img_1.png', 'images/img_2.png', 'images/img_3.png'])
+  //       ];
+  //     case 2:
+  //       return [
+  //         ListOfSatff(
+  //             ['فني المخبر', 'فني عمليات', 'فني الاشغة'], ['images/img_1.png', 'images/img_2.png', 'images/img_3.png'])
+  //       ];
+  //
+  //     default:
+  //       return [];
+  //   }
+  // }
+  //
+  // Widget ListOfSatff(List<String> names, List<String> listOfImages) {
+  //   var height = MediaQuery.of(context).size.height;
+  //   var width = MediaQuery.of(context).size.width;
+  //   return ListView.builder(
+  //     shrinkWrap: true,
+  //     itemCount: names.length,
+  //     itemBuilder: (ctx, index) => Container(
+  //       padding: const EdgeInsets.all(10),
+  //       child: Column(
+  //         children: [
+  //           Container(
+  //               padding: const EdgeInsets.all(10),
+  //               decoration: BoxDecoration(
+  //                 boxShadow: MyColor.boxshadow,
+  //                 borderRadius: const BorderRadius.all(
+  //                   Radius.circular(12),
+  //                 ),
+  //                 color: Colors.white,
+  //               ),
+  //               child: Column(
+  //                 children: [
+  //                   Image.asset(
+  //                     listOfImages[index],
+  //                     height: height / 9,
+  //                     width: width / 9,
+  //                   ),
+  //                   Text(names[index]),
+  //                 ],
+  //               )),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }

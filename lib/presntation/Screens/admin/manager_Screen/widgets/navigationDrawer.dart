@@ -4,11 +4,12 @@ import 'package:hospital/constances/mycolor.dart';
 
 // ignore: must_be_immutable
 class Navigation_Drawer extends StatefulWidget {
-  Navigation_Drawer({super.key, required this.changeIndex, required this.currentindex});
+  Navigation_Drawer({super.key, required this.changeIndex, required this.currentindex, required this.people});
 
-  List<String> people = ['معلومات السكرتارية', 'معلومات الموظفين', 'معلومات المرضى','عرض الغرف'];
+  final List<String> people ;
   final int currentindex;
   final Function(int index) changeIndex;
+
 
   @override
   State<Navigation_Drawer> createState() => _Navigation_DrawerState();
@@ -22,7 +23,7 @@ class _Navigation_DrawerState extends State<Navigation_Drawer> {
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: 4,
+      itemCount: widget.people.length,
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () => widget.changeIndex(index),
