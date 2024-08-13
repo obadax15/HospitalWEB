@@ -14,6 +14,7 @@ class RoomCubit extends Cubit<RoomState> {
     emit(state.copyWith(roomStatus: RoomStatus.loading));
     try {
       room = await RoomRepo.getRoom(id) ;
+      print(room);
       emit(state.copyWith(roomStatus: RoomStatus.success));
     } catch (e) {
       emit(state.copyWith(roomStatus: RoomStatus.failure));

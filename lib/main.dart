@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/bussines_logic/add_lab_emp_cubit/add_lab_emp_cubit.dart';
 import 'package:hospital/bussines_logic/add_rad_emp_cubit/add_rad_emp_cubit.dart';
+import 'package:hospital/bussines_logic/add_response_medical_examination_cubit/add_response_medical_examination_cubit.dart';
 import 'package:hospital/bussines_logic/check_cubit/check_cubit.dart';
 import 'package:hospital/bussines_logic/create_companion_cubit/create_companion_cubit.dart';
 import 'package:hospital/bussines_logic/create_doctor_cubit/create_doctor_cubit.dart';
 import 'package:hospital/bussines_logic/doctor_cubit/doctor_cubit.dart';
+import 'package:hospital/bussines_logic/get_examination_notify_cubit/get_examination_notify_cubit.dart';
+import 'package:hospital/bussines_logic/get_medical_examination_cubit/get_medical_examination_cubit.dart';
 import 'package:hospital/bussines_logic/login_cubit/login_cubit.dart';
+import 'package:hospital/bussines_logic/make_examination_read_cubit/make_examination_read_cubit.dart';
 import 'package:hospital/bussines_logic/nurse_cubit/nurse_cubit.dart';
 import 'package:hospital/bussines_logic/patient_cubit/patient_cubit.dart';
 import 'package:hospital/bussines_logic/reception_cubit/reception_cubit.dart';
@@ -34,6 +38,10 @@ void main() {
       BlocProvider(create: (context) => AddRadEmpCubit()),
       BlocProvider(create: (context) => CreateCompanionCubit()),
       BlocProvider(create: (context) => CheckCubit()),
+      BlocProvider(create: (context) => GetMedicalExaminationCubit()),
+      BlocProvider(create: (context) => GetExaminationNotifyCubit()),
+      BlocProvider(create: (context) => MakeExaminationReadCubit()),
+      BlocProvider(create: (context) => AddResponseMedicalExaminationCubit()),
 
     ],
     child: Hospital(
