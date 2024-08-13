@@ -38,6 +38,7 @@ dependencies:
   http:
   flutter_bloc:
   equatable:
+  file_picker:
 
 dev_dependencies:
   flutter_test:
