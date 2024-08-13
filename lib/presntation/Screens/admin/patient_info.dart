@@ -131,167 +131,167 @@ class _Patient_ViewState extends State<Patient_View> {
                           Expanded(
                             child: ListView.builder(
                               itemCount: rr.length,
-                              itemBuilder: (_, index) => InkWell(
-                                onDoubleTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => Add_Patient(details: rr[index], id: rr[index]['id'],))) ;
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 50.0, right: 20),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return Directionality(
-                                                textDirection: TextDirection.rtl,
-                                                child: AlertDialog(
-                                                  title: const Text(
-                                                    'خيارات',
-                                                    style: TextStyle(
-                                                        color: MyColor.mykhli,
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                  ),
-                                                  content: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      InkWell(
-                                                        onTap: () {
-                                                          Navigator.of(context).push(
-                                                              MaterialPageRoute(
-                                                                  builder: (_) =>
-                                                                      CreateCompanionScreen(
-                                                                          id: rr[index]
-                                                                              [
-                                                                              'id'])));
-                                                        },
-                                                        child: const Text(
-                                                          'اضافة مرافق',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  MyColor.myBlue2,
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                      ),
-                                                      const SizedBox(height: 10),
-                                                      const Divider(
-                                                        color: Colors.black12,
-                                                      ),
-                                                      const SizedBox(height: 10),
-                                                      InkWell(
-                                                        onTap: () {
-                                                          Navigator.of(context).push(
-                                                              MaterialPageRoute(
-                                                                  builder: (_) =>
-                                                                      GetCompanionScreen(
+                              itemBuilder: (_, index) => Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 50.0, right: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return Directionality(
+                                              textDirection: TextDirection.rtl,
+                                              child: AlertDialog(
+                                                title: const Text(
+                                                  'خيارات',
+                                                  style: TextStyle(
+                                                      color: MyColor.mykhli,
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                                content: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder: (_) =>
+                                                                    CreateCompanionScreen(
                                                                         id: rr[index]
                                                                             [
-                                                                            'id'],
-                                                                      )));
-                                                        },
-                                                        child: const Text(
-                                                          'عرض المرافق',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  MyColor.myBlue2,
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
+                                                                            'id'])));
+                                                      },
+                                                      child: const Text(
+                                                        'اضافة مرافق',
+                                                        style: TextStyle(
+                                                            color:
+                                                                MyColor.myBlue2,
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 10),
+                                                    const Divider(
+                                                      color: Colors.black12,
+                                                    ),
+                                                    const SizedBox(height: 10),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder: (_) =>
+                                                                    GetCompanionScreen(
+                                                                      id: rr[index]
+                                                                          [
+                                                                          'id'],
+                                                                    )));
+                                                      },
+                                                      child: const Text(
+                                                        'عرض المرافق',
+                                                        style: TextStyle(
+                                                            color:
+                                                                MyColor.myBlue2,
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+                                                      ),
+                                                    )
+                                                  ],
                                                 ),
-                                              );
-                                            },
-                                          );
-                                        },
-                                        icon: const Icon(
-                                          Icons.person_2_outlined,
-                                          size: 25,
-                                        ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                      icon: const Icon(
+                                        Icons.person_2_outlined,
+                                        size: 25,
                                       ),
-                                      BlocListener<CheckCubit, CheckState>(
-                                        listener: (context, state) {
-                                          if (state.checkStatus ==
-                                              CheckStatus.success) {
-                                            if (rr[index]['deleted_at'] == null) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(const SnackBar(
-                                                      content: Text(
-                                                          'check out successfully')));
-                                            } else {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(const SnackBar(
-                                                      content: Text(
-                                                          'restore successfully')));
-                                            }
+                                    ),
+                                    BlocListener<CheckCubit, CheckState>(
+                                      listener: (context, state) {
+                                        if (state.checkStatus ==
+                                            CheckStatus.success) {
+                                          if (rr[index]['deleted_at'] == null) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    content: Text(
+                                                        'check out successfully')));
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    content: Text(
+                                                        'restore successfully')));
+                                          }
+                                        }
+                                      },
+                                      child: InkWell(
+                                        onTap: () async {
+                                          if (rr[index]['deleted_at'] == null) {
+                                            await BlocProvider.of<CheckCubit>(
+                                                    context)
+                                                .checkOut(rr[index]['id']);
+                                          } else {
+                                            await BlocProvider.of<CheckCubit>(
+                                                    context)
+                                                .restorePatient(
+                                                    rr[index]['id']);
                                           }
                                         },
-                                        child: InkWell(
-                                          onTap: () async {
-                                            if (rr[index]['deleted_at'] == null) {
-                                              await BlocProvider.of<CheckCubit>(
-                                                      context)
-                                                  .checkOut(rr[index]['id']);
-                                            } else {
-                                              await BlocProvider.of<CheckCubit>(
-                                                      context)
-                                                  .restorePatient(
-                                                      rr[index]['id']);
-                                            }
-                                          },
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            width: 50,
-                                            height: 30,
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  rr[index]['deleted_at'] == null
-                                                      ? Colors.green
-                                                      : Colors.red,
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                            child: Text(
-                                              rr[index]['deleted_at'] == null
-                                                  ? 'in'
-                                                  : 'out',
-                                              style: const TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Colors.white),
-                                            ),
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          width: 50,
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                            color:
+                                                rr[index]['deleted_at'] == null
+                                                    ? Colors.green
+                                                    : Colors.red,
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          child: Text(
+                                            rr[index]['deleted_at'] == null
+                                                ? 'in'
+                                                : 'out',
+                                            style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.white),
                                           ),
                                         ),
                                       ),
-                                      Text(
-                                        rr[index]['phoneNumber'],
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black45),
-                                      ),
-                                      Text(
+                                    ),
+                                    Text(
+                                      rr[index]['phoneNumber'],
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.black45),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (_) => Add_Patient(details: rr[index], id: rr[index]['id'],))) ;
+                                      },
+                                      child: Text(
                                         rr[index]['fullName'],
                                         style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w400,
                                             color: Colors.black45),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
