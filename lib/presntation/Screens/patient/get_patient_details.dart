@@ -1,76 +1,80 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hospital/bussines_logic/create_companion_cubit/create_companion_cubit.dart';
-import 'package:hospital/presntation/Screens/companion/create_companion_screen.dart';
+import 'package:hospital/bussines_logic/check_cubit/check_cubit.dart';
+import 'package:hospital/bussines_logic/patient_cubit/patient_cubit.dart';
+import 'package:hospital/presntation/Screens/companion/get_companion_screen.dart';
 
 import '../../../constances/mycolor.dart';
 
-class GetCompanionScreen extends StatefulWidget {
-  const GetCompanionScreen({super.key, required this.id});
+class GetPatientDetails extends StatefulWidget {
+  const GetPatientDetails({super.key, required this.id});
 
   final int id ;
 
   @override
-  State<GetCompanionScreen> createState() => _GetCompanionScreenState();
+  State<GetPatientDetails> createState() => _GetPatientDetailsState();
 }
 
-class _GetCompanionScreenState extends State<GetCompanionScreen> {
+class _GetPatientDetailsState extends State<GetPatientDetails> {
   var details ;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await BlocProvider.of<CreateCompanionCubit>(context).getCompanion(widget.id);
+      await BlocProvider.of<PatientCubit>(context).getPatientByRoom(widget.id);
     });
     super.initState();
   }
+
+  var id ;
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     List<IconData> iconsmodels = [
+      Icons.lock_outlined,
       Icons.person_2_outlined,
-      Icons.numbers,
-      Icons.phone,
+      Icons.location_on_outlined,
+      Icons.local_hospital_outlined,
+      Icons.male_outlined,
+      Icons.person_3_outlined,
+      Icons.card_travel_sharp,
+      Icons.call,
+      Icons.calendar_month_outlined,
     ];
 
     List<String> info = [
+      ':كلمة السر ',
       ':الاسم',
+      ':تقيم في',
+      ':الاختصاص',
+      ':الجنس',
+      ':اسم الأم',
       ':الرقم الوطني',
       ':الرقم الشخصي',
+      ':مواليد',
     ];
     List<String> empoinfo = [];
     return Scaffold(
       backgroundColor: MyColor.myBlue,
-      body: BlocBuilder<CreateCompanionCubit, CreateCompanionState>(
+      body: BlocBuilder<PatientCubit, PatientState>(
         builder: (context, state) {
-          if (state.createCompanionStatus == CreateCompanionStatus.loading ) {
+          if (state.patientStatus == PatientStatus.loading || BlocProvider.of<PatientCubit>(context).patient==null) {
             return const Center(child: CircularProgressIndicator(color: MyColor.mykhli,),) ;
           }
-          if (BlocProvider.of<CreateCompanionCubit>(context).details == null) {
-            return const Center(child: CircularProgressIndicator(color: MyColor.mykhli,),) ;
-          }
-          if (!BlocProvider.of<CreateCompanionCubit>(context).details.containsKey('companion')) {
-            details = {
-              'id' : 0 ,
-            } ;
-            return Center (
-              child: Text(
-                'لايوجد مرافق',
-                style: TextStyle(
-                  color: MyColor.mykhli,
-                  fontSize: width / 47,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ) ;
-          }
-          details = BlocProvider.of<CreateCompanionCubit>(context).details['companion'] ;
+          details = BlocProvider.of<PatientCubit>(context).patient ;
+          id = details['id'] ;
           empoinfo = [
+            details['fatherName'],
             details['fullName'],
+            details['currentLocation'],
+            '_',
+            details['gender'] == 1 ? "ذكر" : "انثى",
+            details['motherName'],
             details['internationalNumber'],
             details['phoneNumber'],
+            details['birthdate'],
           ];
           return Column(
             children: [
@@ -81,7 +85,7 @@ class _GetCompanionScreenState extends State<GetCompanionScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    'قسم المرافق',
+                    'قسم الموظفين العامين',
                     style: TextStyle(
                       color: MyColor.mykhli,
                       fontSize: width / 47,
@@ -123,7 +127,7 @@ class _GetCompanionScreenState extends State<GetCompanionScreen> {
                             fontWeight: FontWeight.bold,
                             color: MyColor.mykhli),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         width: 5,
                       ),
                       Text(
@@ -157,11 +161,64 @@ class _GetCompanionScreenState extends State<GetCompanionScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (details['id'] == 0 ) {
-
-          } else {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateCompanionScreen(id: details['id'] , details: details,),)) ;
-          }
+          showDialog(
+            context: context,
+            builder: (context) {
+              return Directionality(
+                textDirection: TextDirection.rtl,
+                child: AlertDialog(
+                  title: const Text(
+                    'خيارات',
+                    style: TextStyle(
+                        color: MyColor.mykhli,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      BlocListener<CheckCubit, CheckState>(
+                        listener: (context, state) {
+                          if (state.checkStatus == CheckStatus.success) {
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('checkout successfully'))) ;
+                          }
+                        },
+                        child: InkWell(
+                          onTap: () async {
+                            await BlocProvider.of<CheckCubit>(context).checkOut(widget.id);
+                          },
+                          child: const Text(
+                            'تخريج الحساب',
+                            style: TextStyle(
+                                color: MyColor.myBlue2,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Divider(
+                        color: Colors.black12,
+                      ),
+                      const SizedBox(height: 10),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (_) => GetCompanionScreen(id: id))) ;
+                        },
+                        child: const Text(
+                          'مرافق المريض',
+                          style: TextStyle(
+                              color: MyColor.myBlue2,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
         },
         backgroundColor: MyColor.mykhli,
         child: const Icon(

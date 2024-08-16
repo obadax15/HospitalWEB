@@ -12,6 +12,15 @@ class NurseRepo {
     }
   }
 
+  static Future searchNurse(String search) async {
+    try {
+      var response = await NurseApi.searchNurse(search);
+      return jsonDecode(response)['nurses'];
+    } catch (e) {
+      rethrow ;
+    }
+  }
+
   static Future deleteNurse(int id) async {
     try {
       var response = await NurseApi.deleteNurse(id);

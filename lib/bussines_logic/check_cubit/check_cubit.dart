@@ -21,7 +21,7 @@ class CheckCubit extends Cubit<CheckState> {
     emit(state.copyWith(checkStatus: CheckStatus.loading)) ;
     try {
       await CheckRepo.checkOut(id) ;
-      emit(state.copyWith(checkStatus: CheckStatus.success)) ;
+      emit(state.copyWith(checkStatus: CheckStatus.successO)) ;
     } catch (e) {
       emit(state.copyWith(checkStatus: CheckStatus.failure)) ;
     }
@@ -31,7 +31,7 @@ class CheckCubit extends Cubit<CheckState> {
     emit(state.copyWith(checkStatus: CheckStatus.loading)) ;
     try {
       await CheckRepo.restorePatient(id) ;
-      emit(state.copyWith(checkStatus: CheckStatus.success)) ;
+      emit(state.copyWith(checkStatus: CheckStatus.successR)) ;
     } catch (e) {
       emit(state.copyWith(checkStatus: CheckStatus.failure)) ;
     }

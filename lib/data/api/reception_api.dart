@@ -52,6 +52,25 @@ class ReceptionApi{
       rethrow;
     }
   }
+
+  static Future searchNon(int id ,String search) async {
+    try {
+      var response = await http.get(
+        Uri.parse("${Strings.api}/nonMedicals/search/$id/$search"),
+        headers: {
+          "Accept": "application/json",
+          'Content-Type': 'application/json',
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return response.body;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   static Future deleteReception(int id) async {
     try {
       var response = await http.delete(

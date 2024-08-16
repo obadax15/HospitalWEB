@@ -39,6 +39,8 @@ dependencies:
   flutter_bloc:
   equatable:
   file_picker:
+  socket_io_client :
+  flutter_local_notifications:
 
 dev_dependencies:
   flutter_test:

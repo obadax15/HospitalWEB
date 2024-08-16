@@ -18,11 +18,12 @@ class Show_Labrotary extends StatefulWidget {
 class _Show_Labrotary extends State<Show_Labrotary> {
   TextEditingController _searchController = TextEditingController();
 
- @override
+  @override
   void initState() {
-   WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-     await BlocProvider.of<ShowLabEmpCubit>(context).ShowLabEmp();
-   });    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await BlocProvider.of<ShowLabEmpCubit>(context).ShowLabEmp();
+    });
+    super.initState();
   }
 
   @override
@@ -33,52 +34,63 @@ class _Show_Labrotary extends State<Show_Labrotary> {
       'images/img_1.png',
     ];
 
-
-
     return BlocBuilder<ShowLabEmpCubit, Show_Lab_Emp_State>(
-
-  builder: (context, state) {
-    if(state.show_lab_emp_status==Show_Lab_Emp_Status.loading){
-      return CircularProgressIndicator(color: MyColor.mykhli,);
-    }if(BlocProvider.of<ShowLabEmpCubit>(context).rr==null){
-      return CircularProgressIndicator(color: MyColor.mykhli,);
-    }
-    List rr=BlocProvider.of<ShowLabEmpCubit>(context).rr['nonMedicals'];
-    return Padding(
-      padding: const EdgeInsets.all(15),
-      child: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
-            decoration: BoxDecoration(
-              boxShadow: MyColor.boxshadow,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(12),
+      builder: (context, state) {
+        if (state.show_lab_emp_status == Show_Lab_Emp_Status.loading) {
+          return const CircularProgressIndicator(
+            color: MyColor.mykhli,
+          );
+        }
+        if (BlocProvider.of<ShowLabEmpCubit>(context).rr == null) {
+          return const CircularProgressIndicator(
+            color: MyColor.mykhli,
+          );
+        }
+        List rr = BlocProvider.of<ShowLabEmpCubit>(context).rr;
+        return Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                decoration: BoxDecoration(
+                  boxShadow: MyColor.boxshadow,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                  color: Colors.white,
+                ),
+                height: 50,
+                width: width / 1.2,
+                child: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.search_outlined),
+                      onPressed: () async {
+                        if (_searchController.text.isEmpty) {
+                          await BlocProvider.of<ShowLabEmpCubit>(context).ShowLabEmp();
+                        } else {
+                          await BlocProvider.of<ShowLabEmpCubit>(context).searchNon(_searchController.text);
+                        }
+                      },
+                    ),
+                    hintText: 'Search lab Employee',
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(color: Colors.black.withOpacity(0.7)),
+                  ),
+                  style: const TextStyle(
+                    color: Colors.black,
+                  ),
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                ),
               ),
-              color: Colors.white,
-            ),
-            height: 50,
-            width: width / 1.2,
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                suffixIcon: const Icon(Icons.search_outlined),
-                hintText: 'Search labEmp',
-                border: InputBorder.none,
-                hintStyle: TextStyle(color: Colors.black.withOpacity(0.7)),
+              const SizedBox(
+                height: 100,
               ),
-              style: const TextStyle(
-                color: Colors.black,
-              ),
-              onChanged: (value) {
-                setState(() {});
-              },
-            ),
-          ),
-          const SizedBox(
-            height: 100,
-          ),
-          Expanded(
+              Expanded(
                 child: GridView.builder(
                   physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
@@ -87,8 +99,7 @@ class _Show_Labrotary extends State<Show_Labrotary> {
                       crossAxisCount: 4, // Number of columns
                       mainAxisExtent: 155,
                       crossAxisSpacing: 50,
-                      mainAxisSpacing: 20
-                  ),
+                      mainAxisSpacing: 20),
                   itemCount: rr.length,
                   itemBuilder: (context, index) {
                     return Container(
@@ -106,7 +117,7 @@ class _Show_Labrotary extends State<Show_Labrotary> {
                         child: Column(
                           children: [
                             Image.asset(
-                              pathofimages[0] ,
+                              pathofimages[0],
                               height: height / 7,
                               width: width / 7,
                             ),
@@ -114,7 +125,7 @@ class _Show_Labrotary extends State<Show_Labrotary> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                 rr[index]['fullName'],
+                                  rr[index]['fullName'],
                                   style: TextStyle(fontSize: width / 80),
                                 ),
                               ],
@@ -126,7 +137,7 @@ class _Show_Labrotary extends State<Show_Labrotary> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => Lab_Emp_Info(
-                               id: rr[index]['id'],
+                                id: rr[index]['id'],
                               ),
                             ),
                           );
@@ -136,24 +147,23 @@ class _Show_Labrotary extends State<Show_Labrotary> {
                   },
                 ),
               ),
-
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => Add_Lab_Forms(isediting: false)));
-            },
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(MyColor.mykhli),
-            ),
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => Add_Lab_Forms(isediting: false)));
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(MyColor.mykhli),
+                ),
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
-  },
-);
   }
-
 }

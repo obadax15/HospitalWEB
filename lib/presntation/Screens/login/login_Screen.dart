@@ -4,8 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/bussines_logic/login_cubit/login_cubit.dart';
 import 'package:hospital/constances/mycolor.dart';
 import 'package:hospital/constances/role.dart';
-import 'package:hospital/presntation/Screens/admin/add_Reception/Screens/editReception.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:hospital/presntation/Screens/examination/add_examination_screen.dart';
+import 'package:hospital/presntation/Screens/radiograph/add_radiograph_screen.dart';
 import 'package:hospital/presntation/Screens/reception/screens/startreceptopn_screen/start_reception_screen.dart';
+
+import '../../../constances/id.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -123,10 +127,20 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           BlocConsumer<LoginCubit, LoginState>(
             listener: (context , state) {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddExaminationScreen()));
+              IO.Socket socket = IO.io('http://localhost:3000', <String, dynamic>{
+                'transports': ['websocket'],
+                'autoConnect': false,
+              });
               if (state.loginStatus == LoginStatus.success) {
-                if (Role.role == "ss") {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) =>  EditReception(isediting: false
-                  ))) ;
+                if (Role.role == "Secretory" || Role.role == 'Boss') {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) =>  const Start_Reception_Screen())) ;
+                }
+                else if (Role.role == "Labratory") {
+                  socket.emit('join' , Id.id) ;
+                } else if (Role.role == "Radiograph") {
+                  socket.emit('join' , Id.id) ;
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddRadiographScreen())) ;
                 }
               }
             },

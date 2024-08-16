@@ -31,6 +31,17 @@ class ReceptionCubit extends Cubit<ReceptionState> {
       emit(state.copyWith(receptionStatus: ReceptionStatus.failure)) ;
     }
   }
+
+  Future searchNon(String search) async {
+    emit(state.copyWith(receptionStatus: ReceptionStatus.loading)) ;
+    try {
+      reception = await ReceptionRepo.searchNon(3,search);
+      emit(state.copyWith(receptionStatus: ReceptionStatus.success)) ;
+    } catch (e) {
+      emit(state.copyWith(receptionStatus: ReceptionStatus.failure)) ;
+    }
+  }
+
   Future deleteReception(int id) async {
     emit(state.copyWith(receptionStatus: ReceptionStatus.loading)) ;
     try {

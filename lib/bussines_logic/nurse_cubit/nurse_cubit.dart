@@ -19,6 +19,16 @@ class NurseCubit extends Cubit<NurseState> {
     }
   }
 
+  Future searchNurse (String search) async {
+    emit(state.copyWith(nurseStatus: NurseStatus.loading)) ;
+    try {
+      nurse = await NurseRepo.searchNurse(search) ;
+      emit(state.copyWith(nurseStatus: NurseStatus.success)) ;
+    } catch (e) {
+      emit(state.copyWith(nurseStatus: NurseStatus.failure)) ;
+    }
+  }
+
   Future deleteNurse(int id) async {
     emit(state.copyWith(nurseStatus: NurseStatus.loading)) ;
     try {

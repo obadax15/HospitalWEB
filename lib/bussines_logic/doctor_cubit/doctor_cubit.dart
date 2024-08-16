@@ -64,4 +64,14 @@ class DoctorCubit extends Cubit<DoctorState> {
       emit(state.copyWith(doctorStatus: DoctorStatus.failure)) ;
     }
   }
+
+  Future search(String search) async {
+    emit(state.copyWith(doctorStatus: DoctorStatus.loading)) ;
+    try {
+      allDoctor = await DoctorRepo.search(search) ;
+      emit(state.copyWith(doctorStatus: DoctorStatus.success)) ;
+    } catch (e) {
+      emit(state.copyWith(doctorStatus: DoctorStatus.failure)) ;
+    }
+  }
 }

@@ -4,6 +4,7 @@ import 'package:hospital/bussines_logic/nurse_cubit/nurse_cubit.dart';
 import 'package:hospital/constances/mycolor.dart';
 import 'package:hospital/presntation/Screens/admin/general_emp_info/general_emp_info.dart';
 import 'package:hospital/presntation/Screens/nurse_screens/create_nurse_screen.dart';
+import 'package:hospital/presntation/Screens/nurse_time/nurse_all_time_view.dart';
 
 class ShowNurseScreen extends StatefulWidget {
   const ShowNurseScreen({super.key});
@@ -13,6 +14,9 @@ class ShowNurseScreen extends StatefulWidget {
 }
 
 class _ShowNurseScreenState extends State<ShowNurseScreen> {
+
+  final TextEditingController _searchController = TextEditingController() ;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -35,24 +39,68 @@ class _ShowNurseScreenState extends State<ShowNurseScreen> {
         padding: const EdgeInsets.all(25),
         child: Column(
           children: [
-            Container(
-              width: 300,
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: MyColor.mykhli,
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: const Text(
-                'ممرضين',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const NurseAllTimeView())) ;
+              },
+              child: Container(
+                width: 300,
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  color: MyColor.mykhli,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: const Text(
+                  'ممرضين',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400),
+                ),
               ),
             ),
             const SizedBox(
               height: 15,
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+              decoration: BoxDecoration(
+                boxShadow: MyColor.boxshadow,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(12),
+                ),
+                color: Colors.white,
+              ),
+              height: 50,
+              width: width / 1.2,
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  suffixIcon: BlocListener<NurseCubit, NurseState>(
+                    listener: (context, state) {},
+                    child: IconButton(
+                      icon: const Icon(Icons.search),
+                      onPressed: () async {
+                        if (_searchController.text.isEmpty) {
+                          await BlocProvider.of<NurseCubit>(context).getNurse();
+                        } else {
+                          await BlocProvider.of<NurseCubit>(context).searchNurse(_searchController.text);
+                        }
+                      },
+                    ),
+                  ),
+                  hintText: 'Search Nurse',
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(color: Colors.black.withOpacity(0.7)),
+                ),
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 100,
             ),
             BlocBuilder<NurseCubit, NurseState>(
               builder: (context, state) {

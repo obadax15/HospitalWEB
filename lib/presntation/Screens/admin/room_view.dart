@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/bussines_logic/room_cubit/room_cubit.dart';
 import 'package:hospital/constances/mycolor.dart';
 import 'package:hospital/presntation/Screens/checks/patient_grid_view.dart';
+import 'package:hospital/presntation/Screens/patient/get_patient_details.dart';
+import 'package:hospital/presntation/Screens/reception/screens/addPatient/add_Patient.dart';
 
 class Room_View extends StatefulWidget {
   const Room_View({Key? key}) : super(key: key);
@@ -109,7 +111,11 @@ class _Room_ViewState extends State<Room_View> {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (_) => PatientGridView(roomID: room[index]['id']))) ;
+                            if (room[index]['status'] == 'available') {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (_) => Add_Patient(roomID: room[index]['id']))) ;
+                            } else {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (_) => GetPatientDetails(id: room[index]['id']))) ;
+                            }
                           },
                           child: Container(
                             padding: const EdgeInsets.all(25),

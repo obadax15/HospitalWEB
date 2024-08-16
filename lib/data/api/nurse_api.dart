@@ -24,6 +24,24 @@ class NurseApi {
     }
   }
 
+  static Future searchNurse (String search) async {
+    try {
+      var response = await http.get(
+        Uri.parse("${Strings.api}/nurses/search/$search"),
+        headers: {
+          "Accept": "application/json",
+          'Content-Type': 'application/json',
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return response.body;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   static Future deleteNurse (int id) async {
     try {
       var response = await http.delete(

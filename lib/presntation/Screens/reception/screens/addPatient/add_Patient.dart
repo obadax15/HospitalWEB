@@ -9,7 +9,9 @@ class Add_Patient extends StatefulWidget {
 
   final int? id;
 
-  const Add_Patient({super.key, this.details, this.id});
+  final int? roomID;
+
+  const Add_Patient({super.key, this.details, this.id, this.roomID});
 
   @override
   State<Add_Patient> createState() => _CharacterEditScreenState();
@@ -132,8 +134,8 @@ class _CharacterEditScreenState extends State<Add_Patient> {
               ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("patient edited successfully")));
             } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("patient created successfully")));
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("patient created successfully")));
             }
           }
         },
@@ -177,6 +179,9 @@ class _CharacterEditScreenState extends State<Add_Patient> {
                         patient.controllers[6].text,
                         patient.controllers[4].text,
                         patient.controllers[8].text);
+                    await BlocProvider.of<PatientCubit>(context).checkIn(
+                        widget.roomID!,
+                        BlocProvider.of<PatientCubit>(context).id);
                   }
                 },
                 child: Text(

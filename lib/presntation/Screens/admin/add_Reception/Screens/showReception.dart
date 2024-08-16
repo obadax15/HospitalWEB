@@ -32,7 +32,6 @@ class _ShowReceptionState extends State<ShowReception> {
       'images/img_1.png',
     ];
 
-
     return Padding(
       padding: const EdgeInsets.all(15),
       child: Column(
@@ -51,7 +50,21 @@ class _ShowReceptionState extends State<ShowReception> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                suffixIcon: const Icon(Icons.search_outlined),
+                suffixIcon: BlocListener<ReceptionCubit, ReceptionState>(
+                  listener: (context, state) {},
+                  child: IconButton(
+                    icon: const Icon(Icons.search_outlined),
+                    onPressed: () async {
+                      if (_searchController.text.isEmpty) {
+                        await BlocProvider.of<ReceptionCubit>(context)
+                            .getReceptions();
+                      } else {
+                        await BlocProvider.of<ReceptionCubit>(context)
+                            .searchNon(_searchController.text);
+                      }
+                    },
+                  ),
+                ),
                 hintText: 'Search Reception',
                 border: InputBorder.none,
                 hintStyle: TextStyle(color: Colors.black.withOpacity(0.7)),
@@ -59,9 +72,6 @@ class _ShowReceptionState extends State<ShowReception> {
               style: const TextStyle(
                 color: Colors.black,
               ),
-              onChanged: (value) {
-                setState(() {});
-              },
             ),
           ),
           const SizedBox(
@@ -71,27 +81,29 @@ class _ShowReceptionState extends State<ShowReception> {
             builder: (context, state) {
               if (state.receptionStatus == ReceptionStatus.loading) {
                 return const Expanded(
-                  child: CircularProgressIndicator(color: MyColor.mykhli,),
-                ) ;
+                  child: CircularProgressIndicator(
+                    color: MyColor.mykhli,
+                  ),
+                );
               }
-              if (BlocProvider.of<ReceptionCubit>(context).reception == null ) {
+              if (BlocProvider.of<ReceptionCubit>(context).reception == null) {
                 return const Expanded(
-                  child: CircularProgressIndicator(color: MyColor.mykhli,),
-                ) ;
+                  child: CircularProgressIndicator(
+                    color: MyColor.mykhli,
+                  ),
+                );
               }
               List rec = BlocProvider.of<ReceptionCubit>(context).reception;
-
               return Expanded(
                 child: GridView.builder(
                   physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4, // Number of columns
-                    mainAxisExtent: 155,
-                    crossAxisSpacing: 50,
-                    mainAxisSpacing: 20
-                  ),
+                      crossAxisCount: 4, // Number of columns
+                      mainAxisExtent: 155,
+                      crossAxisSpacing: 50,
+                      mainAxisSpacing: 20),
                   itemCount: rec.length,
                   itemBuilder: (context, index) {
                     return Container(
@@ -109,7 +121,7 @@ class _ShowReceptionState extends State<ShowReception> {
                         child: Column(
                           children: [
                             Image.asset(
-                              pathofimages[0] ,
+                              pathofimages[0],
                               height: height / 7,
                               width: width / 7,
                             ),
@@ -128,8 +140,8 @@ class _ShowReceptionState extends State<ShowReception> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Reception_Info(id: rec[index]['id'])
-                            ),
+                                builder: (context) =>
+                                    Reception_Info(id: rec[index]['id'])),
                           );
                         },
                       ),
@@ -141,7 +153,8 @@ class _ShowReceptionState extends State<ShowReception> {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => EditReception(isediting: false)));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => EditReception(isediting: false)));
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(MyColor.mykhli),

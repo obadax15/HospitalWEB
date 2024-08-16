@@ -4,7 +4,9 @@ enum CheckStatus {
   loading ,
   success ,
   failure ,
-  initial
+  initial ,
+  successR ,
+  successO ,
 }
 
 class CheckState extends Equatable {

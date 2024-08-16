@@ -1,12 +1,12 @@
-import 'package:http/http.dart' as http ;
+import 'package:http/http.dart' as http;
 
 import '../../constances/strings.dart';
 
-class DoctorApi {
-  static Future getDoctor () async {
+class ScheduleApi {
+  static Future getDoctorSchedule (int id) async {
     try {
       var response = await http.get(
-        Uri.parse("${Strings.api}/doctors"),
+        Uri.parse("${Strings.api}/working/$id"),
         headers: {
           "Accept": "application/json",
           'Content-Type': 'application/json',
@@ -21,10 +21,10 @@ class DoctorApi {
     }
   }
 
-  static Future getFloorDoctor (int id) async {
+  static Future getNurseSchedule (int id) async {
     try {
       var response = await http.get(
-        Uri.parse("${Strings.api}/doctors/floor/$id"),
+        Uri.parse("${Strings.api}/nurseWorking/$id"),
         headers: {
           "Accept": "application/json",
           'Content-Type': 'application/json',
@@ -39,10 +39,10 @@ class DoctorApi {
     }
   }
 
-  static Future getSpDoctor (int id) async {
+  static Future getDoctorsSchedule (int id) async {
     try {
       var response = await http.get(
-        Uri.parse("${Strings.api}/doctors/$id"),
+        Uri.parse("${Strings.api}/working/time/$id"),
         headers: {
           "Accept": "application/json",
           'Content-Type': 'application/json',
@@ -57,46 +57,10 @@ class DoctorApi {
     }
   }
 
-  static Future getSpe () async {
+  static Future getAllNurseSchedule () async {
     try {
       var response = await http.get(
-        Uri.parse("${Strings.api}/specialists"),
-        headers: {
-          "Accept": "application/json",
-          'Content-Type': 'application/json',
-        },
-      );
-      print(response.body);
-      if (response.statusCode == 200) {
-        return response.body;
-      }
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  static Future getDoctorDetails (int id) async {
-    try {
-      var response = await http.get(
-        Uri.parse("${Strings.api}/doctors/details/$id"),
-        headers: {
-          "Accept": "application/json",
-          'Content-Type': 'application/json',
-        },
-      );
-      print(response.body);
-      if (response.statusCode == 200) {
-        return response.body;
-      }
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  static Future search (String search) async {
-    try {
-      var response = await http.get(
-        Uri.parse("${Strings.api}/doctors/search/$search"),
+        Uri.parse("${Strings.api}/nurseWorking"),
         headers: {
           "Accept": "application/json",
           'Content-Type': 'application/json',

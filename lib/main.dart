@@ -12,16 +12,65 @@ import 'package:hospital/bussines_logic/get_medical_examination_cubit/get_medica
 import 'package:hospital/bussines_logic/login_cubit/login_cubit.dart';
 import 'package:hospital/bussines_logic/make_examination_read_cubit/make_examination_read_cubit.dart';
 import 'package:hospital/bussines_logic/nurse_cubit/nurse_cubit.dart';
+import 'package:hospital/bussines_logic/nurse_schedule_cubit/nurse_schedule_cubit.dart';
 import 'package:hospital/bussines_logic/patient_cubit/patient_cubit.dart';
+import 'package:hospital/bussines_logic/radiograph_cubit/radiograph_cubit.dart';
 import 'package:hospital/bussines_logic/reception_cubit/reception_cubit.dart';
 import 'package:hospital/bussines_logic/room_cubit/room_cubit.dart';
+import 'package:hospital/bussines_logic/schedule_cubit/schedule_cubit.dart';
 import 'package:hospital/bussines_logic/show_lab_emp_cubit/show_lab_emp_cubit.dart';
 import 'package:hospital/bussines_logic/show_rad_emp_cubit/show_rad_emp_cubit.dart';
 import 'package:hospital/bussines_logic/view-patient_cubit/view_patient_cubit.dart';
+import 'package:hospital/constances/id.dart';
+
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'appRouter.dart';
 
+import 'dart:html' as html;
+
+void showNotification(String title, String body) {
+  print('jhjh') ;
+  if (html.Notification.supported) {
+    html.Notification(title, body: body);
+  } else {
+    print("This browser does not support notifications.");
+  }
+}
+
+void requestNotificationPermission() {
+  html.Notification.requestPermission().then((permission) {
+    if (permission == 'granted') {
+      print('Notification permission granted.');
+    } else if (permission == 'denied') {
+      print('Notification permission denied.');
+    } else {
+      print('Notification permission default (prompted but not granted).');
+    }
+  });
+}
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  requestNotificationPermission();
+  IO.Socket socket = IO.io('http://localhost:3000', <String, dynamic>{
+    'transports': ['websocket'],
+    'autoConnect': false,
+  });
+
+  socket.on('connect', (_) {
+    print('connected');
+    socket.emit('join', Id.id);
+  });
+
+  socket.on('disconnect', (_) => print('disconnected'));
+
+  socket.on('Examination', (data) {
+    showNotification('New Notification', data['message']) ;
+    print('Received notification: $data');
+  });
+
+  socket.connect();
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(create: (context) => LoginCubit()),
@@ -42,7 +91,9 @@ void main() {
       BlocProvider(create: (context) => GetExaminationNotifyCubit()),
       BlocProvider(create: (context) => MakeExaminationReadCubit()),
       BlocProvider(create: (context) => AddResponseMedicalExaminationCubit()),
-
+      BlocProvider(create: (context) => RadiographCubit()),
+      BlocProvider(create: (context) => NurseScheduleCubit()),
+      BlocProvider(create: (context) => ScheduleCubit()),
     ],
     child: Hospital(
       app_router: App_Router(),

@@ -7,7 +7,7 @@ class Show_Labrotary_Emp_Repo{
   static Future ShowLabEmp()async{
     try{
       var response=await Show_Labrotary_Emp_Api.ShowLabEmp();
-      return jsonDecode(response);
+      return jsonDecode(response)['nonMedicals'];
 
     } catch(e){rethrow;}
   }

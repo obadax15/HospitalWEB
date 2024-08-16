@@ -23,7 +23,8 @@ class _Show_RadioGraph extends State<Show_RadioGraph> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await BlocProvider.of<ShowRadEmpCubit>(context).showRadEmp();
-    });    super.initState();
+    });
+    super.initState();
   }
 
   @override
@@ -34,124 +35,137 @@ class _Show_RadioGraph extends State<Show_RadioGraph> {
       'images/img_1.png',
     ];
 
-
     return BlocBuilder<ShowRadEmpCubit, Show_Rad_Emp_State>(
-  builder: (context, state) {
-    if(state.show_rad_emp_status==Show_Rad_Emp_Status.loading){
-      return CircularProgressIndicator(color: MyColor.mykhli,);
-    }if(BlocProvider.of<ShowRadEmpCubit>(context).rr==null){
-      return CircularProgressIndicator(color: MyColor.mykhli,);
-    }
-    List rr=BlocProvider.of<ShowRadEmpCubit>(context).rr['nonMedicals'];
-    return Padding(
-      padding: const EdgeInsets.all(15),
-      child: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
-            decoration: BoxDecoration(
-              boxShadow: MyColor.boxshadow,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(12),
-              ),
-              color: Colors.white,
-            ),
-            height: 50,
-            width: width / 1.2,
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                suffixIcon: const Icon(Icons.search_outlined),
-                hintText: 'Search Radiograph Employee',
-                border: InputBorder.none,
-                hintStyle: TextStyle(color: Colors.black.withOpacity(0.7)),
-              ),
-              style: const TextStyle(
-                color: Colors.black,
-              ),
-              onChanged: (value) {
-                setState(() {});
-              },
-            ),
-          ),
-          const SizedBox(
-            height: 100,
-          ),
-          Expanded(
-            child: GridView.builder(
-              physics: const BouncingScrollPhysics(),
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4, // Number of columns
-                  mainAxisExtent: 155,
-                  crossAxisSpacing: 50,
-                  mainAxisSpacing: 20
-              ),
-              itemCount: rr.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  width: width / 7,
-                  height: height / 10,
-                  decoration: BoxDecoration(
-                    boxShadow: MyColor.boxshadow,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(12),
-                    ),
-                    color: Colors.white,
+      builder: (context, state) {
+        if (state.show_rad_emp_status == Show_Rad_Emp_Status.loading) {
+          return const CircularProgressIndicator(
+            color: MyColor.mykhli,
+          );
+        }
+        if (BlocProvider.of<ShowRadEmpCubit>(context).rr == null) {
+          return const CircularProgressIndicator(
+            color: MyColor.mykhli,
+          );
+        }
+        List rr = BlocProvider.of<ShowRadEmpCubit>(context).rr;
+        return Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                decoration: BoxDecoration(
+                  boxShadow: MyColor.boxshadow,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(12),
                   ),
-                  child: InkWell(
-                    hoverColor: Colors.transparent,
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          pathofimages[0] ,
-                          height: height / 7,
-                          width: width / 7,
+                  color: Colors.white,
+                ),
+                height: 50,
+                width: width / 1.2,
+                child: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      onPressed: () async {
+                        if (_searchController.text.isEmpty) {
+                          await BlocProvider.of<ShowRadEmpCubit>(context).showRadEmp();
+                        }
+                        else {
+                          await BlocProvider.of<ShowRadEmpCubit>(context).search(_searchController.text);
+                        }
+                      },
+                      icon: const Icon(Icons.search_outlined),
+                    ),
+                    hintText: 'Search Radiograph Employee',
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(color: Colors.black.withOpacity(0.7)),
+                  ),
+                  style: const TextStyle(
+                    color: Colors.black,
+                  ),
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 100,
+              ),
+              Expanded(
+                child: GridView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4, // Number of columns
+                      mainAxisExtent: 155,
+                      crossAxisSpacing: 50,
+                      mainAxisSpacing: 20),
+                  itemCount: rr.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      width: width / 7,
+                      height: height / 10,
+                      decoration: BoxDecoration(
+                        boxShadow: MyColor.boxshadow,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(12),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        color: Colors.white,
+                      ),
+                      child: InkWell(
+                        hoverColor: Colors.transparent,
+                        child: Column(
                           children: [
-                            Text(
-                              rr[index]['fullName'],
-                              style: TextStyle(fontSize: width / 80),
+                            Image.asset(
+                              pathofimages[0],
+                              height: height / 7,
+                              width: width / 7,
                             ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  rr[index]['fullName'],
+                                  style: TextStyle(fontSize: width / 80),
+                                ),
+                              ],
+                            )
                           ],
-                        )
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Rad_Emp_Info(
-                            id: rr[index]['id'],
-                          ),
                         ),
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Rad_Emp_Info(
+                                id: rr[index]['id'],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => Add_Rad_Forms(isediting: false)));
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(MyColor.mykhli),
+                ),
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
-
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => Add_Rad_Forms(isediting: false)));
-            },
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(MyColor.mykhli),
-            ),
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
-  },
-);
   }
 }

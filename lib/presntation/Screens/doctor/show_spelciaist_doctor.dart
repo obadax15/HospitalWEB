@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/bussines_logic/room_cubit/room_cubit.dart';
+import 'package:hospital/presntation/Screens/doctor/doctor_schedule_sp_view.dart';
 
 import '../../../bussines_logic/doctor_cubit/doctor_cubit.dart';
 import '../../../constances/mycolor.dart';
@@ -63,6 +64,9 @@ class _ShowSpelciaistDoctorState extends State<ShowSpelciaistDoctor> {
                             currentIndex = index;
                           });
                           await BlocProvider.of<DoctorCubit>(context).getSpDoctor(specialists[index]['id']);
+                        },
+                        onDoubleTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => DoctorScheduleSpView(id: specialists[index]['id']))) ;
                         },
                         child: Container(
                           padding: const EdgeInsets.all(10),

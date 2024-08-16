@@ -14,7 +14,7 @@ class ShowDoctorScreen extends StatefulWidget {
 }
 
 class _ShowDoctorScreenState extends State<ShowDoctorScreen> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -31,7 +31,6 @@ class _ShowDoctorScreenState extends State<ShowDoctorScreen> {
     List<String> pathofimages = [
       'images/img_1.png',
     ];
-
 
     return Padding(
       padding: const EdgeInsets.all(15),
@@ -51,17 +50,28 @@ class _ShowDoctorScreenState extends State<ShowDoctorScreen> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                suffixIcon: const Icon(Icons.search_outlined),
-                hintText: 'Search Reception',
+                suffixIcon: BlocListener<DoctorCubit, DoctorState>(
+                  listener: (context, state) {},
+                  child: IconButton(
+                    icon: const Icon(Icons.search),
+                    onPressed: () async {
+                      if (_searchController.text.isEmpty) {
+                        await BlocProvider.of<DoctorCubit>(context)
+                            .getDoctor();
+                      } else {
+                        await BlocProvider.of<DoctorCubit>(context)
+                            .search(_searchController.text);
+                      }
+                    },
+                  ),
+                ),
+                hintText: 'Search Doctor',
                 border: InputBorder.none,
                 hintStyle: TextStyle(color: Colors.black.withOpacity(0.7)),
               ),
               style: const TextStyle(
                 color: Colors.black,
               ),
-              onChanged: (value) {
-                setState(() {});
-              },
             ),
           ),
           const SizedBox(
@@ -71,13 +81,17 @@ class _ShowDoctorScreenState extends State<ShowDoctorScreen> {
             builder: (context, state) {
               if (state.doctorStatus == DoctorStatus.loading) {
                 return const Expanded(
-                  child: CircularProgressIndicator(color: MyColor.mykhli,),
-                ) ;
+                  child: CircularProgressIndicator(
+                    color: MyColor.mykhli,
+                  ),
+                );
               }
-              if (BlocProvider.of<DoctorCubit>(context).allDoctor == null ) {
+              if (BlocProvider.of<DoctorCubit>(context).allDoctor == null) {
                 return const Expanded(
-                  child: CircularProgressIndicator(color: MyColor.mykhli,),
-                ) ;
+                  child: CircularProgressIndicator(
+                    color: MyColor.mykhli,
+                  ),
+                );
               }
               List rec = BlocProvider.of<DoctorCubit>(context).allDoctor;
               return Expanded(
@@ -89,8 +103,7 @@ class _ShowDoctorScreenState extends State<ShowDoctorScreen> {
                       crossAxisCount: 4, // Number of columns
                       mainAxisExtent: 155,
                       crossAxisSpacing: 50,
-                      mainAxisSpacing: 20
-                  ),
+                      mainAxisSpacing: 20),
                   itemCount: rec.length,
                   itemBuilder: (context, index) {
                     return Container(
@@ -108,7 +121,7 @@ class _ShowDoctorScreenState extends State<ShowDoctorScreen> {
                         child: Column(
                           children: [
                             Image.asset(
-                              pathofimages[0] ,
+                              pathofimages[0],
                               height: height / 7,
                               width: width / 7,
                             ),
@@ -127,7 +140,8 @@ class _ShowDoctorScreenState extends State<ShowDoctorScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ShowDoctorDetails(id: rec[index]['id']) ,
+                              builder: (context) =>
+                                  ShowDoctorDetails(id: rec[index]['id']),
                             ),
                           );
                         },
@@ -140,10 +154,11 @@ class _ShowDoctorScreenState extends State<ShowDoctorScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => const CreateDoctorScreen(isediting: false)));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const CreateDoctorScreen(isediting: false)));
             },
             style: ButtonStyle(
-              backgroundColor:MaterialStateProperty.all(MyColor.mykhli) ,
+              backgroundColor: MaterialStateProperty.all(MyColor.mykhli),
             ),
             child: const Icon(
               Icons.add,

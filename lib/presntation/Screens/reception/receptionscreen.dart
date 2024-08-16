@@ -32,7 +32,7 @@ class _Manager_ScreenState extends State<Reception_Screen> {
         child: Row(mainAxisAlignment: MainAxisAlignment.end,
           children: [
             // index1==1?Container(width: 20,height: 20,color: Colors.red,):Container(width: 20,height: 20,color: Colors.green,)
-           currentIndex == 1 ? const Patient_View() :currentIndex==0?Expanded(child: Add_Patient()): currentIndex==2? const PatientInHospitalView() : Room_View(),
+           currentIndex == 0 ? const Patient_View() :currentIndex==1? const PatientInHospitalView() : Room_View(),
 
             buildDrawerInContianer(height, width),
             Container(

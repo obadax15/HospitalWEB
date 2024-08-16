@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/bussines_logic/create_doctor_cubit/create_doctor_cubit.dart';
 import 'package:hospital/bussines_logic/doctor_cubit/doctor_cubit.dart';
 import 'package:hospital/presntation/Screens/doctor/create_doctor_screen.dart';
+import 'package:hospital/presntation/Screens/doctor/doctor_schedule_view.dart';
+import 'package:hospital/presntation/Screens/nurse_time/Doctor_time_screen.dart';
 
 import '../../../constances/mycolor.dart';
 
 class ShowDoctorDetails extends StatefulWidget {
   const ShowDoctorDetails({super.key, required this.id});
-  
+
   final int id ;
 
   @override
@@ -18,7 +20,7 @@ class ShowDoctorDetails extends StatefulWidget {
 class _ShowDoctorDetailsState extends State<ShowDoctorDetails> {
 
   var details ;
-  
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -41,8 +43,9 @@ class _ShowDoctorDetailsState extends State<ShowDoctorDetails> {
       Icons.card_travel_sharp,
       Icons.call,
       Icons.calendar_month_outlined,
+      Icons.timer_outlined,
     ];
-    
+
     List<String> info = [
       ':كلمة السر ',
       ':الاسم',
@@ -53,6 +56,7 @@ class _ShowDoctorDetailsState extends State<ShowDoctorDetails> {
       ':الرقم الوطني',
       ':الرقم الشخصي',
       ':مواليد',
+      ':اوقات الدوام',
     ];
     List<String> empoinfo = [];
     return Scaffold(
@@ -73,6 +77,7 @@ class _ShowDoctorDetailsState extends State<ShowDoctorDetails> {
       details['internationalNumber'],
       details['phoneNumber'],
       details['birthdate'],
+      'جدول الدوام',
     ];
     return Column(
         children: [
@@ -118,22 +123,36 @@ class _ShowDoctorDetailsState extends State<ShowDoctorDetails> {
               itemBuilder: (context, index) => Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    empoinfo[index],
-                    style: TextStyle(
-                        fontSize: width / 70,
-                        fontWeight: FontWeight.bold,
-                        color: MyColor.mykhli),
+                  InkWell(
+                    onTap: () {
+                      if (index == iconsmodels.length - 1) {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => DoctorScheduleView(id: widget.id))) ;
+                      }
+                    },
+                    child: Text(
+                      empoinfo[index],
+                      style: TextStyle(
+                          fontSize: width / 70,
+                          fontWeight: FontWeight.bold,
+                          color: MyColor.mykhli),
+                    ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
-                  Text(
-                    info[index],
-                    style: TextStyle(
-                        fontSize: width / 70,
-                        fontWeight: FontWeight.bold,
-                        color: MyColor.mykhli),
+                  InkWell(
+                    onTap: () {
+                      if (index == info.length - 1) {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => DoctorTimeScreen(id : widget.id))) ;
+                      }
+                    },
+                    child: Text(
+                      info[index],
+                      style: TextStyle(
+                          fontSize: width / 70,
+                          fontWeight: FontWeight.bold,
+                          color: MyColor.mykhli),
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(right: width / 89, left: 15),

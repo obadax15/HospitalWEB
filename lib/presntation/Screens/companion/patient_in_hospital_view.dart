@@ -25,8 +25,11 @@ class _PatientInHospitalViewState extends State<PatientInHospitalView> {
     super.initState();
   }
 
+  final _searchController = TextEditingController() ;
+
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     return Expanded(
       child: BlocBuilder<ViewPatientCubit, View_Patient_State>(
         builder: (context, state) {
@@ -47,35 +50,41 @@ class _PatientInHospitalViewState extends State<PatientInHospitalView> {
               child: Column(
                 children: [
                   Container(
-                    height: 70,
+                    margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
                     decoration: BoxDecoration(
+                      boxShadow: MyColor.boxshadow,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(12),
+                      ),
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
                     ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.search_outlined),
-                            Text(
-                              'ابحث هنا',
-                              style:
-                              TextStyle(color: Colors.grey, fontSize: 12),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 25.0),
-                          child: Text(
-                            'البحث عن مريض',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 26,
-                                fontWeight: FontWeight.bold),
+                    height: 50,
+                    width: width / 1.2,
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        suffixIcon: BlocListener<ViewPatientCubit, View_Patient_State>(
+                          listener: (context, state) {},
+                          child: IconButton(
+                            icon: const Icon(Icons.search),
+                            onPressed: () async {
+                              if (_searchController.text.isEmpty) {
+                                await BlocProvider.of<ViewPatientCubit>(context)
+                                    .getPatientIn();
+                              } else {
+                                await BlocProvider.of<ViewPatientCubit>(context)
+                                    .searchPI(_searchController.text);
+                              }
+                            },
                           ),
                         ),
-                      ],
+                        hintText: 'Search Patient',
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(color: Colors.black.withOpacity(0.7)),
+                      ),
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -220,18 +229,17 @@ class _PatientInHospitalViewState extends State<PatientInHospitalView> {
                                     BlocListener<CheckCubit, CheckState>(
                                       listener: (context, state) {
                                         if (state.checkStatus ==
-                                            CheckStatus.success) {
-                                          if (rr[index]['deleted_at'] == null) {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(const SnackBar(
-                                                content: Text(
-                                                    'check out successfully')));
-                                          } else {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(const SnackBar(
-                                                content: Text(
-                                                    'restore successfully')));
-                                          }
+                                            CheckStatus.successR) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  'restore successfully')));
+                                        }
+                                        else if (state.checkStatus == CheckStatus.successO) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  'check out successfully')));
                                         }
                                       },
                                       child: InkWell(

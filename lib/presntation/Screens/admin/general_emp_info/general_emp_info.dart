@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital/bussines_logic/nurse_cubit/nurse_cubit.dart';
 import 'package:hospital/constances/mycolor.dart';
 import 'package:hospital/presntation/Screens/nurse_screens/create_nurse_screen.dart';
+import 'package:hospital/presntation/Screens/nurse_screens/nurse_schedule_view.dart';
+import 'package:hospital/presntation/Screens/nurse_time/nurse_time_screen.dart';
 
 class General_Emp_Info extends StatelessWidget {
   const General_Emp_Info({Key? key, required this.details}) : super(key: key);
@@ -25,6 +27,7 @@ class General_Emp_Info extends StatelessWidget {
       Icons.card_travel_sharp,
       Icons.call,
       Icons.calendar_month_outlined,
+      Icons.timer_outlined,
     ];
     List<String> info = [
       ':كلمة السر ',
@@ -36,6 +39,7 @@ class General_Emp_Info extends StatelessWidget {
       ':الرقم الوطني',
       ':الرقم الشخصي',
       ':مواليد',
+      ': اوقات المناوبة',
     ];
     List<String> empoinfo = [
       details['fatherName'],
@@ -47,6 +51,7 @@ class General_Emp_Info extends StatelessWidget {
       details['internationalNumber'],
       details['phoneNumber'],
       details['birthdate'],
+      '_'
     ];
     return Scaffold(
       backgroundColor: MyColor.myBlue,
@@ -91,42 +96,64 @@ class General_Emp_Info extends StatelessWidget {
                 childAspectRatio: height / 200, crossAxisSpacing: width / 2,
               ),
               itemCount: iconsmodels.length,
-              itemBuilder: (context, index) => Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    empoinfo[index],
-                    style: TextStyle(
-                        fontSize: width / 70,
-                        fontWeight: FontWeight.bold,
-                        color: MyColor.mykhli),
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    info[index],
-                    style: TextStyle(
-                        fontSize: width / 70,
-                        fontWeight: FontWeight.bold,
-                        color: MyColor.mykhli),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: width / 89, left: 15),
-                    child: Container(
-                      height: width / 30,
-                      width: width / 30,
-                      decoration: const BoxDecoration(
-                          color: Color.fromRGBO(255, 228, 228, 1),
-                          shape: BoxShape.circle),
-                      child: Icon(
-                        iconsmodels[index],
-                        size: width / 70,
+              itemBuilder: (context, index) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        if (index == 9) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => NurseScheduleView(
+                                    id: details['id'],
+                                  )));
+                        }
+                      },
+                      child: Text(
+                        empoinfo[index],
+                        style: TextStyle(
+                            fontSize: width / 70,
+                            fontWeight: FontWeight.bold,
+                            color: MyColor.mykhli),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        if (index == 9) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => Nurse_Time(
+                                    id: details['id'],
+                                  )));
+                        }
+                      },
+                      child: Text(
+                        info[index],
+                        style: TextStyle(
+                            fontSize: width / 70,
+                            fontWeight: FontWeight.bold,
+                            color: MyColor.mykhli),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: width / 89, left: 15),
+                      child: Container(
+                        height: width / 30,
+                        width: width / 30,
+                        decoration: const BoxDecoration(
+                            color: Color.fromRGBO(255, 228, 228, 1),
+                            shape: BoxShape.circle),
+                        child: Icon(
+                          iconsmodels[index],
+                          size: width / 70,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ],
@@ -153,7 +180,8 @@ class General_Emp_Info extends StatelessWidget {
                         listener: (context, state) {},
                         child: InkWell(
                           onTap: () async {
-                            await BlocProvider.of<NurseCubit>(context).deleteNurse(details['id']);
+                            await BlocProvider.of<NurseCubit>(context)
+                                .deleteNurse(details['id']);
                           },
                           child: const Text(
                             'حذف حساب',
@@ -171,7 +199,11 @@ class General_Emp_Info extends StatelessWidget {
                       const SizedBox(height: 10),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (_) => CreateNurseScreen(isEditing: true , details: details,))) ;
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => CreateNurseScreen(
+                                    isEditing: true,
+                                    details: details,
+                                  )));
                         },
                         child: const Text(
                           'تعديل معلومات الحساب',

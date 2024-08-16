@@ -30,7 +30,7 @@ class _Manager_ScreenState extends State<Manager_Screen> {
         child: Row(mainAxisAlignment: MainAxisAlignment.end,
           children: [
             // index1==1?Container(width: 20,height: 20,color: Colors.red,):Container(width: 20,height: 20,color: Colors.green,)
-            currentIndex == 0 ? Expanded(child: ExpandableListEmployee()) :currentIndex==1?Expanded(child: ShowReception()):currentIndex==3? Expanded(child: Room_View()):Patient_View(),
+            currentIndex == 0 ? Expanded(child: ExpandableListEmployee()) :currentIndex==1?Expanded(child: ShowReception()):Container(),
 
             buildDrawerInContianer(height, width),
             Container(
@@ -63,7 +63,7 @@ class _Manager_ScreenState extends State<Manager_Screen> {
                 color: Colors.black,
               ),
               Navigation_Drawer(
-                people: ['معلومات السكرتارية', 'معلومات الموظفين', 'معلومات المرضى','عرض الغرف'],
+                people: ['معلومات الموظفين','معلومات السكرتارية'],
                 changeIndex: (index) {
                   setState(() {
                     currentIndex = index;

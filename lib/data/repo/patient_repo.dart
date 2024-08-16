@@ -6,7 +6,16 @@ class PatientRepo {
   static Future createPatient(String name , String number , String father , String mother , String inNumber , String location , String gender , String birthdate , String work , String social) async {
     try {
       var response = await PatientApi.createPatient(name, number, father , mother , inNumber , location , gender , birthdate,work , social) ;
-      return jsonDecode(response);
+      return jsonDecode(response)['id'][0];
+    } catch (e) {
+      rethrow ;
+    }
+  }
+
+  static Future getPatientByRoom(int roomID) async {
+    try {
+      var response = await PatientApi.getPatientByRoom(roomID) ;
+      return jsonDecode(response)['patient'] ;
     } catch (e) {
       rethrow ;
     }

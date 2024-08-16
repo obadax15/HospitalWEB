@@ -19,7 +19,7 @@ class _PatientGridViewState extends State<PatientGridView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await BlocProvider.of<ViewPatientCubit>(context).getPatient();
+      await BlocProvider.of<ViewPatientCubit>(context).getPatientNotInRoom();
     });
     super.initState();
   }
@@ -62,10 +62,10 @@ class _PatientGridViewState extends State<PatientGridView> {
                 if (state.view_patient_status == View_Patient_Status.loading) {
                   return const CircularProgressIndicator(color: MyColor.mykhli);
                 }
-                if (BlocProvider.of<ViewPatientCubit>(context).rr == null) {
+                if (BlocProvider.of<ViewPatientCubit>(context).rr4 == null) {
                   return const CircularProgressIndicator(color: MyColor.mykhli);
                 }
-                List nurse = BlocProvider.of<ViewPatientCubit>(context).rr;
+                List nurse = BlocProvider.of<ViewPatientCubit>(context).rr4;
                 return Expanded(
                   child: GridView.builder(
                     physics: const BouncingScrollPhysics(),

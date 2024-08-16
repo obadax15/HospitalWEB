@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital/constances/mycolor.dart';
+import 'package:hospital/presntation/Screens/admin/manager_Screen/managerScreen.dart';
 import 'package:hospital/presntation/Screens/forms/make_forms/Screens/lab_form.dart';
+import 'package:hospital/presntation/Screens/login/login_Screen.dart';
 import 'package:hospital/presntation/Screens/reception/receptionscreen.dart';
 
 class Start_Reception_Screen extends StatefulWidget {
@@ -53,9 +55,9 @@ class _Start_Reception_ScreenState extends State<Start_Reception_Screen> {
                       height: height / 6,
                       width: width / 6,
                     ),
-                    BuildPushContainer('إنشاء حساب مريض',(){Navigator.push(context, MaterialPageRoute(builder: (c)=>Reception_Screen()));},width),
-                    BuildPushContainer('البحث عن مريض',(){Navigator.push(context, MaterialPageRoute(builder: (c)=>Reception_Screen()));},width),
-                    BuildPushContainer('رؤية الغرف',(){Navigator.push(context, MaterialPageRoute(builder: (c)=>Reception_Screen()));},width),
+                    BuildPushContainer('المرضى',(){Navigator.push(context, MaterialPageRoute(builder: (c)=>Reception_Screen()));},width),
+                    BuildPushContainer('الموظفين',(){Navigator.push(context, MaterialPageRoute(builder: (c)=>Manager_Screen()));},width),
+                    BuildPushContainer('تسجيل خروج',(){Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const LoginScreen())) ;},width),
                   ],
                 ),
               ),

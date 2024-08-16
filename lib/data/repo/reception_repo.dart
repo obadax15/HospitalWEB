@@ -21,6 +21,16 @@ class ReceptionRepo {
       rethrow ;
     }
   }
+
+  static Future searchNon(int id ,String search) async {
+    try {
+      var response = await ReceptionApi.searchNon(id,search) ;
+      return jsonDecode(response)["nonMedical"] ;
+    } catch (e) {
+      rethrow ;
+    }
+  }
+
   static Future deleteReception(int id) async {
     try {
       var response = await ReceptionApi.deleteReception(id);

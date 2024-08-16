@@ -47,4 +47,13 @@ class DoctorRepo {
       rethrow ;
     }
   }
+
+  static Future search(String search) async {
+    try {
+      var response = await DoctorApi.search(search);
+      return jsonDecode(response)['doctors'];
+    } catch (e) {
+      rethrow ;
+    }
+  }
 }
