@@ -134,13 +134,14 @@ class _LoginScreenState extends State<LoginScreen> {
               });
               if (state.loginStatus == LoginStatus.success) {
                 if (Role.role == "Secretory" || Role.role == 'Boss') {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) =>  const Start_Reception_Screen())) ;
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) =>  const Start_Reception_Screen()) ) ;
                 }
                 else if (Role.role == "Labratory") {
                   socket.emit('join' , Id.id) ;
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const AddExaminationScreen())) ;
                 } else if (Role.role == "Radiograph") {
                   socket.emit('join' , Id.id) ;
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddRadiographScreen())) ;
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const AddRadiographScreen())) ;
                 }
               }
             },
