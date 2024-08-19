@@ -127,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           BlocConsumer<LoginCubit, LoginState>(
             listener: (context , state) {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddExaminationScreen()));
+              // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddExaminationScreen()));
               IO.Socket socket = IO.io('http://localhost:3000', <String, dynamic>{
                 'transports': ['websocket'],
                 'autoConnect': false,
