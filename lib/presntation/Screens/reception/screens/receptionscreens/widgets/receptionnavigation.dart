@@ -6,7 +6,7 @@ import 'package:hospital/constances/mycolor.dart';
 class Recption_Navigation extends StatefulWidget {
   Recption_Navigation({super.key, required this.changeIndex, required this.currentindex});
 
-  List<String> people = ['مرضى المستشفى', 'المرضى الموجودين', 'رؤية الغرف'];
+  List<String> people = ['مرضى المستشفى', 'المرضى الموجودين', 'رؤية الغرف' , 'تحليل بيانات'];
   final int currentindex;
   final Function(int index) changeIndex;
 
@@ -22,7 +22,7 @@ class _Navigation_DrawerState extends State<Recption_Navigation> {
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: 3,
+      itemCount: 4,
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () => widget.changeIndex(index),

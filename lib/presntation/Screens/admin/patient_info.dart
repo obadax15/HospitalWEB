@@ -8,6 +8,7 @@ import 'package:hospital/constances/mycolor.dart';
 import 'package:hospital/presntation/Screens/companion/create_companion_screen.dart';
 import 'package:hospital/presntation/Screens/companion/get_companion_screen.dart';
 
+import '../../../bussines_logic/patient_cubit/patient_cubit.dart';
 import '../reception/screens/addPatient/add_Patient.dart';
 
 class Patient_View extends StatefulWidget {
@@ -109,6 +110,13 @@ class _Patient_ViewState extends State<Patient_View> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
+                                  'الملف',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
                                   'المرافق',
                                   style: TextStyle(
                                       color: Colors.black,
@@ -150,6 +158,18 @@ class _Patient_ViewState extends State<Patient_View> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
+                                    BlocListener<PatientCubit, PatientState>(
+                                      listener: (context, state) {},
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          await BlocProvider.of<PatientCubit>(context).downloadPdf(rr[index]['id']) ;
+                                        },
+                                        icon: const Icon(
+                                          Icons.file_download,
+                                          size: 25,
+                                        ),
+                                      ),
+                                    ),
                                     IconButton(
                                       onPressed: () {
                                         showDialog(

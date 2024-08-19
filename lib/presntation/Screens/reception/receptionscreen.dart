@@ -6,6 +6,7 @@ import 'package:hospital/presntation/Screens/admin/manager_Screen/widgets/showEm
 import 'package:hospital/presntation/Screens/admin/patient_info.dart';
 import 'package:hospital/presntation/Screens/admin/room_view.dart';
 import 'package:hospital/presntation/Screens/checks/patient_grid_view.dart';
+import 'package:hospital/presntation/Screens/column_chart.dart';
 import 'package:hospital/presntation/Screens/companion/patient_in_hospital_view.dart';
 import 'package:hospital/presntation/Screens/reception/screens/addPatient/add_Patient.dart';
 import 'package:hospital/presntation/Screens/reception/screens/addPatient/controller/addpatierntcontroller.dart';
@@ -32,7 +33,7 @@ class _Manager_ScreenState extends State<Reception_Screen> {
         child: Row(mainAxisAlignment: MainAxisAlignment.end,
           children: [
             // index1==1?Container(width: 20,height: 20,color: Colors.red,):Container(width: 20,height: 20,color: Colors.green,)
-           currentIndex == 0 ? const Patient_View() :currentIndex==1? const PatientInHospitalView() : Room_View(),
+           currentIndex == 0 ? const Patient_View() :currentIndex==1? const PatientInHospitalView() : currentIndex == 2 ? const Room_View() : const ColumnChart(),
 
             buildDrawerInContianer(height, width),
             Container(

@@ -52,6 +52,41 @@ class PatientApi {
     }
   }
 
+  static Future downloadPdf (int id) async {
+    try {
+      var response=await http.get(
+          Uri.parse("${Strings.api}/file_pdf/$id"),
+          headers: {
+            'Content-Type': 'application/json',
+          }
+      );
+      print(response.body) ;
+      if(response.statusCode == 200){
+        print(response.body) ;
+        return response.body;
+      }
+    } catch (e) {
+      rethrow ;
+    }
+  }
+
+  static Future statistics () async {
+    try {
+      var response=await http.get(
+          Uri.parse("${Strings.api}/doctors/statistics/patient"),
+          headers: {
+            'Content-Type': 'application/json',
+          }
+      );
+      print(response.body) ;
+      if(response.statusCode==200){
+        return response.body;
+      }
+    } catch (e) {
+      rethrow ;
+    }
+  }
+
   static Future edit(String name , String number , String father , String mother , String inNumber , String location , String gender , String birthdate , String work , String social , int id) async {
     try {
       var response = await http.post(

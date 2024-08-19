@@ -10,6 +10,7 @@ class PatientCubit extends Cubit<PatientState> {
   PatientCubit() : super(PatientState.initial());
 
   var patient ;
+  var patientS ;
 
   var id ;
 
@@ -38,6 +39,26 @@ class PatientCubit extends Cubit<PatientState> {
     try {
       patient = await PatientRepo.getPatientByRoom(roomID);
       print(patient) ;
+      emit(state.copyWith(patientStatus: PatientStatus.success)) ;
+    } catch (e) {
+      emit(state.copyWith(patientStatus: PatientStatus.failure)) ;
+    }
+  }
+
+  Future downloadPdf(int id) async {
+    emit(state.copyWith(patientStatus: PatientStatus.loading)) ;
+    try {
+      await PatientRepo.downloadPdf(id);
+      emit(state.copyWith(patientStatus: PatientStatus.success)) ;
+    } catch (e) {
+      emit(state.copyWith(patientStatus: PatientStatus.failure)) ;
+    }
+  }
+
+  Future statistics() async {
+    emit(state.copyWith(patientStatus: PatientStatus.loading)) ;
+    try {
+      patientS = await PatientRepo.statistics();
       emit(state.copyWith(patientStatus: PatientStatus.success)) ;
     } catch (e) {
       emit(state.copyWith(patientStatus: PatientStatus.failure)) ;
