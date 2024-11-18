@@ -1,6 +1,6 @@
 # hospital
 
-A new Flutter project.
+Automated a hospital management system covering employee and patient records, labs, radiology, patient rooms, ICU, and operating rooms. Integrated real-time notifications using WebSocket technology for efficient communication and streamlined operations.
 
 ## Getting Started
 
